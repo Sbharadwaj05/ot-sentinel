@@ -1,0 +1,40 @@
+title: OT Sentinel - IEC 104 TESTFR Flooding (DoS)
+id: 550e8400-e29b-41d4-a716-446655440024
+status: experimental
+description: |
+  Detects abnormally high rate of IEC 104 TESTFR (Test Frame) messages —
+  a denial-of-service attempt. TESTFR flooding can overwhelm the RTU's
+  communication processor, cause session timeout, and prevent legitimate
+  I-frame data transfer.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0814/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0814
+  - ot.iec104
+  - detection.denial_of_service
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: iec104
+    control_function|contains: TESTFR
+  condition: selection | count(source_ip) > 200
+  timeframe: 5m
+falsepositives:
+  - Misconfigured SCADA client with incorrect t1 timer
+  - Network congestion causing retransmission storms
+  - Aggressive keep-alive configuration during troubleshooting
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-IEC-005
+  ot_sentinel_protocol: iec104
+  ot_sentinel_attack_class: denial_of_service
+  wazuh_rule_ids:
+    - 200027
+    - 200028
+  threshold: "200 TESTFR frames per 5 minutes per source IP"

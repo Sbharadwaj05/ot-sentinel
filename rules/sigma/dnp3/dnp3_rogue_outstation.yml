@@ -1,0 +1,43 @@
+title: OT Sentinel - Unsolicited DNP3 Response from Rogue Outstation
+id: 550e8400-e29b-41d4-a716-446655440010
+status: experimental
+description: |
+  Detects DNP3 unsolicited response messages (FC 0x82) from outstation data
+  link addresses not in the known outstation list. A rogue outstation can
+  inject forged unsolicited responses to falsify telemetry — operators see
+  fake sensor readings, alarm states, or breaker positions.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0856/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0856
+  - ot.dnp3
+  - detection.spoof_reporting
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: response
+    function_code|in:
+      - 130 # Unsolicited Response (0x82 = 130 dec)
+  filter_known:
+    data_link_source|in:
+      - <known_outstation_1>
+      - <known_outstation_2>
+  condition: selection and not filter_known
+falsepositives:
+  - New outstation being commissioned without updating CDB list
+  - Outstation address reassignment after maintenance
+  - Network segmentation test with temporary device addresses
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-001
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: spoof_reporting
+  wazuh_rule_id: 200012
+  requires_cdb_list: known_dnp3_outstations

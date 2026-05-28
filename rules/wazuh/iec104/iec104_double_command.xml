@@ -1,0 +1,48 @@
+<!--
+  Rule: OT-SENTINEL-IEC-003
+  Protocol: IEC 60870-5-104 (TCP 2404)
+  Attack Pattern: C_DC_NA Double Command Injection
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (13/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects IEC 104 double command messages (ASDU type 46: C_DC_NA) from
+  unauthorized source IPs. C_DC_NA controls a binary output with TWO states
+  in a single command — typically used for devices with distinct ON and OFF
+  positions (disconnectors, tap changers). Double commands provide an extra
+  safety layer: the device must match the commanded state.
+
+  C_DC_NA = Command Double Command, Normalized value.
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - CDB List: cdb-lists/authorized_iec104_clients
+-->
+<rule id="200024" level="13">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">iec104</field>
+  <!-- ASDU type 46 = C_DC_NA (Double Command) -->
+  <field name="asdu_type_id">^46$</field>
+  <field name="event_type">^request$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_iec104_clients</list>
+
+  <description>
+    OT Sentinel: Unauthorized IEC 104 double command (C_DC_NA) detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Common Address: $(common_address), IOA: $(ioa)
+    Cause: $(cot) ($(cot_name))
+    Double commands control devices with ON/OFF states — disconnectors, tap changers.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,iec104,unauthorized_command,critical_severity</group>
+</rule>

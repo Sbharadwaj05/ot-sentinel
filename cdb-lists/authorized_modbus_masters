@@ -1,0 +1,31 @@
+# OT Sentinel — Authorized Modbus Masters CDB List
+# ===============================================
+# Format: IP_ADDRESS:Description
+#
+# This list is used by Wazuh rules (200001, 200002) to determine
+# which Modbus master IPs are authorized to issue write commands.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/authorized_modbus_masters</list>
+#
+# Maintenance:
+# - Add new engineering workstations here BEFORE they connect
+# - Remove decommissioned systems
+# - Review quarterly against CMDB/asset inventory
+
+# SCADA / HMI Servers
+192.168.1.10:Primary_SCADA_Server
+192.168.1.11:Backup_SCADA_Server
+
+# Engineering Workstations
+192.168.1.20:Engineering_Workstation_1
+192.168.1.21:Engineering_Workstation_2
+
+# Data Historian
+192.168.1.30:OSIsoft_PI_Server
+
+# Test/Development (consider removing in production)
+192.168.100.10:Test_Engineering_Laptop
+
+# ===== ADD YOUR AUTHORIZED MASTERS BELOW =====
+# Format: IP:Description

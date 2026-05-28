@@ -1,0 +1,79 @@
+<!--
+  Rule: OT-SENTINEL-DNP-004a (Parent)
+  Protocol: DNP3
+  Attack Pattern: Authentication Messages — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks DNP3 Secure Authentication (SA) messages — both challenge requests
+  (FC 0x20) and challenge responses (FC 0x83). These messages should be rare
+  in normal operations (typically only during session establishment). A spike
+  indicates an attacker attempting to brute-force or bypass SA.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Child rule: 200016 (OT-SENTINEL-DNP-004b)
+-->
+<rule id="200015" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <!-- FC 0x20 = Authenticate, FC 0x83 = Authenticate Response (0x03 + 0x80) -->
+  <field name="function_code">^(32|131)$</field>
+
+  <description>OT Sentinel: DNP3 authentication message (tracking only)</description>
+  <group>ot-sentinel,dnp3,authentication,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-DNP-004b (Child)
+  Protocol: DNP3
+  Attack Pattern: Authentication Challenge Failure Spike
+  ATT&CK for ICS: T0858 - Spoof Reporting Message
+  Severity: Medium (9/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects an unusually high frequency of DNP3 Secure Authentication messages
+  from a single source within a short time window. SA exchanges should be
+  rare — high frequency indicates:
+  - Brute-force attempts against SA challenge-response
+  - Replay of captured authentication challenges
+  - Fuzzing of the SA implementation
+  - SA bypass attempts via protocol manipulation
+
+  DNP3 SA v5 is rarely deployed in practice, but where it IS deployed,
+  attacks against it represent sophisticated, targeted intrusions.
+
+  Threshold: 10+ auth messages from same source in 5 minutes.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Parent rule: 200015 (OT-SENTINEL-DNP-004a)
+-->
+<rule id="200016" level="9">
+  <if_matched_sid>200015</if_matched_sid>
+
+  <frequency count="10" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: DNP3 authentication message spike detected.
+    Source: $(source_ip) sent $(frequency) authentication messages in 5 minutes.
+    Normal SA exchanges are rare — this may indicate brute-force or bypass attempt.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0858</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,authentication,medium_severity</group>
+</rule>

@@ -1,0 +1,85 @@
+<!--
+  Rule: OT-SENTINEL-MOD-007a (Parent)
+  Protocol: Modbus TCP
+  Attack Pattern: Exception Response Flood — Parent Match Rule
+  Severity: 0 (tracking only — does not generate alerts)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Purpose:
+  Matches Modbus exception responses (function codes 128-255, where FC = original
+  FC + 0x80). This parent rule tracks exception responses for the child rule
+  (200010) which fires when the exception rate exceeds threshold.
+
+  Exception codes indicate the PLC rejected the request — normal operations
+  produce occasional exceptions. Sustained exception floods indicate a scanner
+  or fuzzer probing invalid registers.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Child rule: 200010 (OT-SENTINEL-MOD-007b)
+
+  Note: We match function_code >= 128 (0x80) which is the standard Modbus
+  exception response convention. Valid responses are FC 1-127.
+-->
+<rule id="200009" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="event_type">^response$</field>
+  <!-- FC 128-255 = exception responses (original FC + 0x80)
+       Regex: 128-129 or 130-199 or 200-249 or 250-255 -->
+  <field name="function_code">^1(2[89]|[3-9][0-9])$|^2([0-4][0-9]|5[0-5])$</field>
+
+  <description>OT Sentinel: Modbus exception response (tracking only)</description>
+  <group>ot-sentinel,modbus,protocol_fuzzing,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-MOD-007b (Child)
+  Protocol: Modbus TCP
+  Attack Pattern: Exception Response Flood
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Medium (7/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects a sustained flood of Modbus exception responses from a PLC — a strong
+  indicator of an attacker scanning or fuzzing the device. Normal operations
+  produce occasional exceptions (e.g., reading past end of register map).
+  Sustained exception rates indicate active probing of invalid addresses.
+
+  Threshold:
+  - 30+ exception responses from same target in 5 minutes
+  - Normal exceptions: < 5 per day
+  - Attack scanning: 30+ in 5 min is clearly malicious
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Parent rule: 200009 (OT-SENTINEL-MOD-007a)
+-->
+<rule id="200010" level="7">
+  <if_matched_sid>200009</if_matched_sid>
+
+  <!-- Alert when 30+ exception responses from same target in 5 minutes -->
+  <frequency count="30" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: Modbus exception response flood detected — possible scanning/fuzzing.
+    Target PLC: $(source_ip) sent $(frequency) exception responses in 5 minutes.
+    This indicates active probing of invalid register addresses.
+    Request source: $(destination_ip)
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,protocol_fuzzing,medium_severity</group>
+</rule>

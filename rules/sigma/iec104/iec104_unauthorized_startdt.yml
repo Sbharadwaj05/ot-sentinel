@@ -1,0 +1,41 @@
+title: OT Sentinel - Unauthorized IEC 104 STARTDT
+id: 550e8400-e29b-41d4-a716-446655440020
+status: experimental
+description: |
+  Detects IEC 104 STARTDT (Start Data Transfer) activation frames from
+  unauthorized source IPs. STARTDT initiates the data transfer phase,
+  granting the client ability to send ASDUs. An unauthorized STARTDT
+  is the first step in a control session hijack or command injection.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0855
+  - ot.iec104
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: iec104
+    control_function: STARTDT_act
+  filter_authorized:
+    source_ip|in:
+      - <authorized_client_1>
+      - <authorized_client_2>
+  condition: selection and not filter_authorized
+falsepositives:
+  - New SCADA server joining the network
+  - Backup control center taking over after primary failure
+  - Testing/commissioning new RTU connections
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-IEC-001
+  ot_sentinel_protocol: iec104
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200022
+  requires_cdb_list: authorized_iec104_clients

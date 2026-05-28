@@ -1,0 +1,78 @@
+<!--
+  Rule: OT-SENTINEL-MQTT-004a (Parent)
+  Protocol: MQTT
+  Attack Pattern: Publish — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks MQTT PUBLISH packets for frequency-based flood detection.
+  MQTT publish flooding can overwhelm the broker, consume bandwidth,
+  or represent a sensor-spoofing DoS attack.
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+  - Child rule: 200034 (OT-SENTINEL-MQTT-004b)
+-->
+<rule id="200033" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">mqtt</field>
+  <field name="packet_type">^PUBLISH$</field>
+
+  <description>OT Sentinel: MQTT publish (tracking only)</description>
+  <group>ot-sentinel,mqtt,denial_of_service,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-MQTT-004b (Child)
+  Protocol: MQTT
+  Attack Pattern: High-Frequency Publish Flood
+  ATT&CK for ICS: T0814 - Denial of Service
+  Severity: Medium (8/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects abnormally high MQTT publish rates from a single client.
+  MQTT publish flooding can:
+  - Overwhelm the broker (CPU/memory exhaustion)
+  - Saturate OT network bandwidth (especially with large payloads)
+  - Spoof sensor data at high frequency (false readings)
+  - Trigger subscriber-side DoS (message queue overflow)
+
+  Normal publish rates vary by deployment:
+  - Sensor data: 1 publish per 1-60 seconds
+  - Control commands: very rare (only on operator action)
+  - Attack: 50+ publishes per second from single client
+
+  Threshold: 500+ publishes in 5 minutes from same client.
+  Approximately 1.7 publishes/sec sustained.
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+  - Parent rule: 200033 (OT-SENTINEL-MQTT-004a)
+-->
+<rule id="200034" level="8">
+  <if_matched_sid>200033</if_matched_sid>
+
+  <frequency count="500" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: MQTT publish flood detected — possible DoS or sensor spoofing.
+    Source: $(source_ip) published $(frequency) messages in 5 minutes.
+    This rate far exceeds normal sensor telemetry or operator commands.
+  </description>
+
+  <mitre>
+    <id>T0814</id>
+  </mitre>
+
+  <group>ot-sentinel,mqtt,denial_of_service,medium_severity</group>
+</rule>

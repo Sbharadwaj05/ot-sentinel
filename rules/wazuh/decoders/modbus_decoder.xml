@@ -1,0 +1,86 @@
+<!--
+  OT Sentinel — Modbus TCP Decoder
+  ====================================
+  Parses JSON-formatted Modbus TCP traffic logs for Wazuh ingestion.
+
+  Expected log format (from modbus_tap.py or equivalent network monitor):
+  {
+    "protocol": "modbus",
+    "timestamp": "2026-05-27T10:00:00.000Z",
+    "source_ip": "192.168.1.50",
+    "source_port": 54321,
+    "destination_ip": "192.168.1.100",
+    "destination_port": 502,
+    "transaction_id": 1,
+    "unit_id": 1,
+    "function_code": 5,
+    "function_name": "write_single_coil",
+    "reference_number": 0,
+    "count": 1,
+    "data": "0xFF00",
+    "event_type": "request",
+    "error": null
+  }
+
+  Installation: Copy to /var/ossec/etc/decoders/
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+-->
+
+<!-- ============================================================
+     Parent Decoder: Identifies Modbus traffic via program_name
+     ============================================================ -->
+<decoder name="modbus-tap">
+  <program_name>^modbus_tap$</program_name>
+</decoder>
+
+<decoder name="modbus-tap-fields">
+  <parent>modbus-tap</parent>
+  <type>json</type>
+  <!-- All JSON fields extracted automatically:
+       protocol, source_ip, source_port, destination_ip, destination_port,
+       transaction_id, unit_id, function_code, function_name,
+       reference_number, count, data, event_type, error -->
+</decoder>
+
+
+<!-- ============================================================
+     Alternative: Syslog-based ingestion (matches on JSON content)
+     Use this if modbus_tap sends logs via syslog
+     ============================================================ -->
+<decoder name="modbus-syslog">
+  <program_name>^syslog$</program_name>
+</decoder>
+
+<decoder name="modbus-syslog-fields">
+  <parent>modbus-syslog</parent>
+  <type>json</type>
+  <prematch>{</prematch>
+  <!-- Extracts all JSON fields from syslog messages containing
+       Modbus traffic logs in JSON format -->
+</decoder>
+
+
+<!-- ============================================================
+     Field-level extraction for legacy/non-JSON formats
+     Handles plain-text Modbus log lines if JSON isn't available
+     ============================================================ -->
+<decoder name="modbus-plaintext">
+  <program_name>^modbus_monitor$</program_name>
+</decoder>
+
+<decoder name="modbus-plaintext-fields">
+  <parent>modbus-plaintext</parent>
+  <regex>(\S+) (\S+) (\S+) -> (\S+):(\d+) FC=(\d+) UNIT=(\d+) REF=(\d+) DATA=(\S+)</regex>
+  <order>event_type, protocol, source_ip, destination_ip, destination_port, function_code, unit_id, reference_number, data</order>
+</decoder>
+
+
+<!-- ============================================================
+     Decoder Test Cases (for decoder validation)
+     Run: /var/ossec/bin/wazuh-logtest
+     ============================================================
+     Input: {"protocol":"modbus","source_ip":"192.168.1.50","function_code":5,"unit_id":1,"reference_number":0,"data":"0xFF00","event_type":"request"}
+     Expected output: protocol=modbus, source_ip=192.168.1.50, function_code=5
+-->

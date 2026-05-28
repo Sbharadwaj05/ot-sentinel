@@ -1,0 +1,25 @@
+# OT Sentinel — Allowed Non-Standard Modbus Ports CDB List
+# ======================================================
+# Format: PORT:Description
+#
+# This list suppresses false positives for rule 200011 (OT-SENTINEL-MOD-008)
+# which alerts on Modbus traffic on any port other than 502.
+#
+# Some legitimate Modbus deployments use non-standard ports:
+# - Modbus gateways often use port 1502
+# - NAT/port-forwarding setups may remap ports
+# - Legacy devices may have hardcoded alternate ports
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/non_standard_modbus_ports</list>
+#
+# Usage in rule (if you want to suppress known ports):
+#   <list field="destination_port" lookup="not_match_key">etc/lists/non_standard_modbus_ports</list>
+
+# Common legitimate non-standard Modbus ports
+1502:Modbus_Gateway_Default
+1503:Modbus_Gateway_Alternate
+2502:Modbus_Alternate
+
+# ===== ADD YOUR ORGANIZATION'S KNOWN PORTS BELOW =====
+# Format: PORT:Description

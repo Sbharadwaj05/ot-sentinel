@@ -1,0 +1,41 @@
+title: OT Sentinel - Rogue Modbus Master Detection
+id: 550e8400-e29b-41d4-a716-446655440003
+status: experimental
+description: |
+  Detects Modbus traffic from source IPs never previously observed on the
+  OT network — a strong indicator of an unauthorized device connecting.
+  Uses a CDB list of known Modbus master IPs built during a learning period
+  to identify first-seen masters.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0846
+  - ot.modbus
+  - detection.network_intrusion
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: modbus
+    event_type: request
+  filter_known:
+    source_ip|in:
+      - <known_master_1>
+      - <known_master_2>
+  condition: selection and not filter_known
+falsepositives:
+  - New SCADA server or engineering workstation being commissioned
+  - DHCP lease rotation causing new IP for legitimate device
+  - Vendor remote support connecting from a new IP
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-003
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: network_intrusion
+  wazuh_rule_id: 200003
+  requires_cdb_list: known_modbus_masters

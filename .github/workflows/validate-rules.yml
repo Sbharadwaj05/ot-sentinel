@@ -1,0 +1,47 @@
+name: Validate OT Sentinel Rules
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rules/**'
+      - 'cdb-lists/**'
+      - 'mappings/**'
+  push:
+    branches: [main]
+    paths:
+      - 'rules/**'
+      - 'cdb-lists/**'
+      - 'mappings/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml lxml
+
+      - name: Validate Wazuh XML syntax
+        run: python tools/validate_xml.py rules/wazuh/
+
+      - name: Validate Sigma YAML syntax
+        run: python tools/validate_yaml.py rules/sigma/
+
+      - name: Check ATT&CK ICS IDs
+        run: python tools/validate_attack_ids.py
+
+      - name: Verify rule naming convention
+        run: python tools/check_naming.py
+
+      - name: Generate ATT&CK Navigator layer
+        run: python tools/generate_navigator_layer.py

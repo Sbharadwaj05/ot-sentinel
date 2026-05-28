@@ -1,0 +1,40 @@
+title: OT Sentinel - Unknown DNP3 Data Link Address
+id: 550e8400-e29b-41d4-a716-446655440015
+status: experimental
+description: |
+  Detects DNP3 traffic involving data link addresses not in the known
+  addresses CDB list. Indicates a new or rogue device joining the DNP3
+  network, misconfigured RTU, or network scanning activity.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.dnp3
+  - detection.network_discovery
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: request
+  filter_known:
+    data_link_source|in:
+      - <known_address_1>
+      - <known_address_2>
+  condition: selection and not filter_known
+falsepositives:
+  - New RTU being added to the network (commissioning)
+  - Address reassignment after device replacement
+  - Network expansion project adding new field devices
+level: low
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-006
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: network_discovery
+  wazuh_rule_id: 200019
+  requires_cdb_list: known_dnp3_addresses

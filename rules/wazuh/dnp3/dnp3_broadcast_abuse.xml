@@ -1,0 +1,52 @@
+<!--
+  Rule: OT-SENTINEL-DNP-003
+  Protocol: DNP3 (TCP/UDP, port 20000)
+  Attack Pattern: Broadcast Command Abuse
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: Medium (10/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects DNP3 messages sent to the broadcast address (0xFFFF = 65535) at the
+  data link layer. Broadcast commands are rarely used in normal operations and
+  almost always indicate malicious intent — an attacker sending a command to
+  ALL devices on the DNP3 network simultaneously.
+
+  Broadcast commands can:
+  - Cold restart all outstations simultaneously (cascading outage)
+  - Disable unsolicited reporting on all devices (blind the SCADA)
+  - Send direct operate commands to every device (mass control)
+
+  DNP3 broadcast address: 0xFFFF (65535) at data link layer.
+  Addresses 0xFFF0-0xFFFE (65520-65534) are also reserved.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml (must be loaded first)
+  - Log source: dnp3_tap.py JSON output to Wazuh agent
+-->
+<rule id="200014" level="10">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <field name="event_type">^request$</field>
+
+  <!-- Broadcast addresses: 65520-65535 (0xFFF0-0xFFFF) -->
+  <field name="data_link_destination">^655(2[0-9]|3[0-5])$</field>
+
+  <description>
+    OT Sentinel: DNP3 broadcast command detected.
+    Source: $(source_ip):$(source_port) -> Broadcast (addr $(data_link_destination))
+    Function: $(function_code) ($(function_name))
+    DNP3 broadcast commands affect ALL devices on the network.
+    This is almost never legitimate in production OT environments.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,unauthorized_command,medium_severity</group>
+</rule>

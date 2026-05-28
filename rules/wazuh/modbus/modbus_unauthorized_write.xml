@@ -1,0 +1,71 @@
+<!--
+  Rule: OT-SENTINEL-MOD-001
+  Protocol: Modbus TCP
+  Attack Pattern: Unauthorized Coil Write
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (12/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects Modbus write commands to coils (function codes 05 and 15)
+  originating from source IPs not present in the authorized Modbus
+  masters CDB list. Coil writes control physical outputs — an unauthorized
+  write could start/stop equipment, open/close valves, or trigger safety
+  conditions.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - CDB List: cdb-lists/authorized_modbus_masters (copy to /var/ossec/etc/lists/)
+  - Log source: modbus_tap.py JSON output to Wazuh agent
+
+  False Positives:
+  - New engineering workstation not yet in the CDB allowlist
+  - Temporary contractor laptop during legitimate maintenance
+  - Network reconfiguration changing source IPs
+
+  Tuning:
+  - Populate authorized_modbus_masters.txt with all legitimate Modbus master IPs
+  - Consider adding time-based windows (only alert during non-maintenance hours)
+  - Add a lower-level companion rule (200002) for first-seen masters to track additions
+-->
+<rule id="200001" level="12">
+  <decoded_as>json</decoded_as>
+
+  <!-- Match Modbus protocol -->
+  <field name="protocol">modbus</field>
+
+  <!-- Match write commands: FC05 (Write Single Coil) or FC15 (Write Multiple Coils) -->
+  <field name="function_code">^(5|15)$</field>
+
+  <!-- Ensure this is a request, not a response -->
+  <field name="event_type">^request$</field>
+
+  <!-- Allowlist check: alert if source_ip is NOT in the authorized masters CDB list
+       File: /var/ossec/etc/lists/authorized_modbus_masters (no extension) -->
+  <list
+        field="source_ip"
+        lookup="not_match_key"
+    >etc/lists/authorized_modbus_masters</list>
+
+  <!-- Description with dynamic fields for investigation -->
+  <description>
+    OT Sentinel: Unauthorized Modbus coil write detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    Coil: $(reference_number)
+    Data: $(data)
+    Transaction: $(transaction_id)
+    Unit ID: $(unit_id)
+  </description>
+
+  <!-- MITRE ATT&CK for ICS mapping -->
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <!-- Group tags for filtering and dashboarding -->
+  <group>ot-sentinel,modbus,unauthorized_command,high_severity</group>
+</rule>

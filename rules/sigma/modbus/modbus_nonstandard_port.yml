@@ -1,0 +1,39 @@
+title: OT Sentinel - Modbus on Non-Standard Port
+id: 550e8400-e29b-41d4-a716-446655440008
+status: experimental
+description: |
+  Detects Modbus TCP traffic on any port other than the standard port 502.
+  This could indicate an attacker running Modbus on an alternate port to
+  evade detection, a misconfigured device, or legacy equipment. Standard
+  Modbus TCP uses port 502 per IANA assignment.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0840/
+  - https://modbus.org/docs/Modbus_Messaging_Implementation_Guide_V1_0b.pdf
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0840
+  - ot.modbus
+  - detection.evasion
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: modbus
+    event_type: request
+  filter_standard:
+    destination_port: 502
+  condition: selection and not filter_standard
+falsepositives:
+  - Modbus-to-Ethernet gateways using port 1502 (common alternate)
+  - Legacy Modbus devices with hardcoded non-standard ports
+  - Port forwarding or NAT configurations in OT DMZ
+level: low
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-008
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: evasion
+  wazuh_rule_id: 200011

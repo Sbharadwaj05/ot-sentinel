@@ -1,0 +1,19 @@
+# OT Sentinel — Authorized IEC 104 Client IPs CDB List
+# ===================================================
+# Format: IP_ADDRESS:Description
+#
+# Used by rules 200022 (IEC-001), 200023 (IEC-002), 200024 (IEC-003)
+# to determine which IEC 104 client IPs are authorized to initiate
+# STARTDT, send commands, or inject ASDUs.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/authorized_iec104_clients</list>
+
+# SCADA / Control Center
+192.168.1.10:Primary_SCADA
+192.168.1.11:Backup_SCADA
+
+# RTU/PLC Gateways
+192.168.1.100:Substation_Gateway_1
+
+# ===== ADD YOUR AUTHORIZED CLIENTS BELOW =====

@@ -1,0 +1,16 @@
+# OT Sentinel — Authorized OPC-UA Clients CDB List
+# ================================================
+# Format: IP_ADDRESS:Description
+#
+# Used by rule 200039 (OT-SENTINEL-OPC-003) to detect unauthorized
+# OPC-UA Write requests from unknown client IPs.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/authorized_opcua_clients</list>
+
+# Authorized OPC-UA Clients
+192.168.1.10:Primary_SCADA
+192.168.1.11:Backup_SCADA
+192.168.1.20:Engineering_Workstation
+
+# ===== ADD YOUR AUTHORIZED CLIENTS BELOW =====

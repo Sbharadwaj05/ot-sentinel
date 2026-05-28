@@ -1,0 +1,77 @@
+<!--
+  Rule: OT-SENTINEL-MOD-005a (Parent)
+  Protocol: Modbus TCP
+  Attack Pattern: Mass Register Read — Parent Match Rule
+  Severity: 0 (tracking only — does not generate alerts)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Purpose:
+  Matches all Modbus read holding register (FC03) and read input register (FC04)
+  requests. This parent rule does NOT generate alerts — it serves as a tracker
+  for the child rule (200006) which fires when the read rate exceeds threshold.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Child rule: 200006 (OT-SENTINEL-MOD-005b)
+-->
+<rule id="200005" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="function_code">^(3|4)$</field>
+  <field name="event_type">^request$</field>
+
+  <description>OT Sentinel: Modbus register read (tracking only)</description>
+  <group>ot-sentinel,modbus,reconnaissance,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-MOD-005b (Child)
+  Protocol: Modbus TCP
+  Attack Pattern: Mass Register Read (Reconnaissance)
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Low (6/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects an unusually high volume of Modbus read commands (FC03/FC04) from a
+  single source IP within a 5-minute window. This is the Modbus equivalent of
+  a port scan — the attacker is enumerating device memory to find interesting
+  registers for later exploitation.
+
+  Threshold:
+  - 50+ read requests from same source IP in 5 minutes
+  - Tune this threshold based on your normal SCADA polling rate
+  - Typical SCADA: 1 read every 1-5 seconds = 12-60 reads per 5 min
+  - Attack recon: 50+ reads in < 1 minute = clearly anomalous
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Parent rule: 200005 (OT-SENTINEL-MOD-005a)
+-->
+<rule id="200006" level="6">
+  <if_matched_sid>200005</if_matched_sid>
+
+  <!-- Alert when 50+ FC03/FC04 requests from same source in 5 minutes -->
+  <frequency count="50" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: Mass Modbus register read detected — possible reconnaissance.
+    Source: $(source_ip) issued $(frequency) read requests in 5 minutes.
+    This exceeds the normal SCADA polling baseline.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,reconnaissance,low_severity</group>
+</rule>

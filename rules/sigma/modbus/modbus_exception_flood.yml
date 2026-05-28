@@ -1,0 +1,43 @@
+title: OT Sentinel - Modbus Exception Response Flood
+id: 550e8400-e29b-41d4-a716-446655440007
+status: experimental
+description: |
+  Detects a sustained flood of Modbus exception responses from a PLC —
+  a strong indicator of an attacker scanning or fuzzing the device.
+  Exception codes (FC 128-255 = 0x80+) indicate the PLC rejected the request.
+  Normal operations produce occasional exceptions; sustained floods indicate
+  active probing of invalid register addresses.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+  - https://modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0846
+  - ot.modbus
+  - detection.protocol_fuzzing
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: modbus
+    event_type: response
+    function_code|gte: 128
+  condition: selection | count(source_ip) > 30
+  timeframe: 5m
+falsepositives:
+  - Misconfigured SCADA client polling nonexistent register ranges
+  - Newly commissioned PLC being discovered by SCADA (temporary)
+  - Firmware incompatibility between client and PLC versions
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-007
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: protocol_fuzzing
+  wazuh_rule_ids:
+    - 200009  # parent (tracker)
+    - 200010  # child (alert)
+  threshold: "30 exception responses per 5 minutes per source IP"

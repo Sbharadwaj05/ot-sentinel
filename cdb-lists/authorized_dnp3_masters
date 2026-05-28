@@ -1,0 +1,18 @@
+# OT Sentinel — Authorized DNP3 Masters CDB List
+# ==============================================
+# Format: IP_ADDRESS:Description
+#
+# Used by rule 200013 (OT-SENTINEL-DNP-002) to determine which DNP3 master
+# IPs are authorized to issue direct operate commands.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/authorized_dnp3_masters</list>
+
+# SCADA / Control Center
+192.168.1.10:Primary_SCADA
+192.168.1.11:Backup_SCADA
+
+# Engineering Workstations
+192.168.1.20:Engineering_Station_1
+
+# ===== ADD YOUR AUTHORIZED MASTERS BELOW =====

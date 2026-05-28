@@ -1,0 +1,50 @@
+<!--
+  OT Sentinel — MQTT Decoder
+  ==========================
+  Parses JSON-formatted MQTT traffic logs for Wazuh ingestion.
+
+  Expected log format (from mqtt_tap.py or equivalent):
+  {
+    "protocol": "mqtt",
+    "timestamp": "2026-05-28T10:00:00.000Z",
+    "source_ip": "192.168.1.50",
+    "source_port": 54321,
+    "destination_ip": "192.168.1.100",
+    "destination_port": 1883,
+    "packet_type": "CONNECT",
+    "client_id": "scada_client_01",
+    "username": null,
+    "password_flag": false,
+    "topic": null,
+    "qos": 0,
+    "retain": false,
+    "payload_size": 42,
+    "event_type": "request"
+  }
+
+  MQTT packet types: CONNECT, CONNACK, PUBLISH, PUBACK, SUBSCRIBE,
+  SUBACK, UNSUBSCRIBE, UNSUBACK, PINGREQ, PINGRESP, DISCONNECT
+
+  Installation: Copy to /var/ossec/etc/decoders/
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+-->
+<decoder name="mqtt-tap">
+  <program_name>^mqtt_tap$</program_name>
+</decoder>
+
+<decoder name="mqtt-tap-fields">
+  <parent>mqtt-tap</parent>
+  <type>json</type>
+</decoder>
+
+<decoder name="mqtt-syslog">
+  <program_name>^syslog$</program_name>
+</decoder>
+
+<decoder name="mqtt-syslog-fields">
+  <parent>mqtt-syslog</parent>
+  <type>json</type>
+  <prematch>{</prematch>
+</decoder>

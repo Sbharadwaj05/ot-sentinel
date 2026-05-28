@@ -1,0 +1,19 @@
+# OT Sentinel — Authorized MQTT Client IDs CDB List
+# ================================================
+# Format: CLIENT_ID:Description
+#
+# Used by rule 200035 (OT-SENTINEL-MQTT-005) to detect rogue/unrecognized
+# MQTT clients connecting to the broker.
+#
+# Tuning: Start empty, add each legitimate client ID as it appears.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/known_mqtt_clients</list>
+
+# Known Legitimate MQTT Clients
+scada_client_01:Primary_SCADA_HMI
+scada_client_02:Backup_SCADA_HMI
+sensor_gateway_01:Temperature_Sensor_Gateway
+historian_01:Data_Historian
+
+# ===== ADD YOUR CLIENT IDs BELOW =====

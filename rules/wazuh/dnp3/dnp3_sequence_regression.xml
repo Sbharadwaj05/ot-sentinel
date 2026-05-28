@@ -1,0 +1,92 @@
+<!--
+  Rule: OT-SENTINEL-DNP-005a (Parent)
+  Protocol: DNP3
+  Attack Pattern: Low Sequence Number — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks DNP3 messages with unusually low sequence numbers (0-2) which may
+  indicate replay attacks. Most replay tools start replaying from the first
+  captured packet which has sequence number 0-2.
+
+  DNP3 sequence numbers normally increment and wrap — but wrapping is rare
+  (occurs every 64 packets). Repeated low sequence numbers from the same
+  source in a short window indicate a tool re-sending captured traffic.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Child rule: 200018 (OT-SENTINEL-DNP-005b)
+
+  Note: This is an imperfect heuristic. True replay detection requires
+  stateful tracking of expected sequence numbers per connection, which
+  Wazuh rules alone cannot provide. A future enhancement could use the
+  Wazuh integration framework for stateful tracking.
+-->
+<rule id="200017" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <field name="event_type">^request$</field>
+  <!-- Sequence numbers 0, 1, 2 — unusually low for established sessions -->
+  <field name="sequence_number">^(0|1|2)$</field>
+
+  <description>OT Sentinel: DNP3 low sequence number (tracking only)</description>
+  <group>ot-sentinel,dnp3,replay_attack,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-DNP-005b (Child)
+  Protocol: DNP3
+  Attack Pattern: Sequence Number Regression — Possible Replay
+  ATT&CK for ICS: T0856 - Spoof Reporting Message
+  Severity: Medium (8/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects repeated DNP3 messages with abnormally low sequence numbers from the
+  same source — a strong indicator of a replay attack. Replay tools capture
+  legitimate DNP3 traffic and retransmit it. Because the tool restarts from the
+  first captured frame, sequence numbers repeatedly reset to 0-2.
+
+  Detection approach:
+  - Track when sequence numbers 0-2 appear
+  - Alert when they appear 3+ times from the same source in 5 minutes
+  - Each "reset to 0" cycle = one replay attempt
+
+  Threshold: 3+ occurrences of seq 0-2 from same source in 5 min.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Parent rule: 200017 (OT-SENTINEL-DNP-005a)
+
+  Limitation:
+  This heuristic may produce false positives during network reconnections
+  where legitimate sequence numbers naturally start from 0. Tune the
+  frequency threshold based on your environment's reconnection patterns.
+-->
+<rule id="200018" level="8">
+  <if_matched_sid>200017</if_matched_sid>
+
+  <frequency count="3" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: Repeated low DNP3 sequence numbers — possible replay attack.
+    Source: $(source_ip) sent $(frequency) messages with seq 0-2 in 5 minutes.
+    Replay tools typically restart sequence counters from 0 on each cycle.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0856</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,replay_attack,medium_severity</group>
+</rule>

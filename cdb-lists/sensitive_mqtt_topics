@@ -1,0 +1,20 @@
+# OT Sentinel — Sensitive MQTT Topics CDB List
+# ===========================================
+# Format: TOPIC_PATTERN:Description
+#
+# Used by rule 200032 (OT-SENTINEL-MQTT-003) to detect retained messages
+# on sensitive topics. Retained messages are stored by the broker and
+# delivered to every new subscriber — poisoning a retained message on a
+# critical topic affects all future clients.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/sensitive_mqtt_topics</list>
+
+# Critical Control Topics
+control/pump/+/cmd:Pump_Control_Commands
+control/valve/+/cmd:Valve_Control_Commands
+control/breaker/+/cmd:Breaker_Control_Commands
+alarm/critical/#:Critical_Alarms
+setpoint/#:Setpoint_Changes
+
+# ===== ADD YOUR SENSITIVE TOPICS BELOW =====

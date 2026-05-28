@@ -1,0 +1,51 @@
+<!--
+  Rule: OT-SENTINEL-MOD-008
+  Protocol: Modbus TCP
+  Attack Pattern: Modbus over Non-Standard Port
+  ATT&CK for ICS: T0840 - Network Connection Enumeration
+  Severity: Low (4/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects Modbus TCP traffic on any port other than the standard port 502.
+  This could indicate:
+  - An attacker running Modbus on an alternate port to evade IDS/IPS rules
+    that only monitor port 502
+  - A misconfigured device that should be investigated
+  - A dual-homed device bridging IT and OT networks on non-standard ports
+  - Legacy equipment using non-standard ports (rare but possible)
+
+  Note: Some OT environments legitimately use ports other than 502 (e.g., port
+  1502 for Modbus gateways). Add known non-standard ports to the
+  non_standard_modbus_ports CDB list to suppress false positives.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Log source: modbus_tap.py JSON output to Wazuh agent
+-->
+<rule id="200011" level="4">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="event_type">^request$</field>
+
+  <!-- Alert when destination port is NOT 502 -->
+  <field name="destination_port" negate="yes">^502$</field>
+
+  <description>
+    OT Sentinel: Modbus traffic detected on non-standard port.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    Standard Modbus TCP uses port 502. Traffic on other ports may indicate
+    evasion, misconfiguration, or legacy equipment.
+  </description>
+
+  <mitre>
+    <id>T0840</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,evasion,low_severity</group>
+</rule>

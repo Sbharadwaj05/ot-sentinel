@@ -1,0 +1,47 @@
+<!--
+  Rule: OT-SENTINEL-OPC-003
+  Protocol: OPC-UA (TCP 4840)
+  Attack Pattern: Unauthorized Node Write
+  ATT&CK for ICS: T0836 - Modify Parameter
+  Severity: High (13/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects OPC-UA Write service requests from source IPs not in the
+  authorized OPC-UA clients CDB list. OPC-UA Write can modify:
+  - Variable node values (set-points, thresholds, configuration)
+  - Method arguments (trigger control actions)
+  - Event filter configuration (blind the monitoring system)
+
+  OPC-UA Write is the most dangerous service — it directly modifies
+  device parameters and can trigger physical control actions.
+
+  Dependencies:
+  - Decoder: opcua_decoder.xml
+  - CDB List: cdb-lists/authorized_opcua_clients
+-->
+<rule id="200039" level="13">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">opcua</field>
+  <field name="service_type">^Write$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_opcua_clients</list>
+
+  <description>
+    OT Sentinel: Unauthorized OPC-UA Write detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Node: $(node_id)
+    Session: $(session_id), Security: $(security_policy)
+    OPC-UA Write can modify device parameters, set-points, and trigger controls.
+  </description>
+
+  <mitre>
+    <id>T0836</id>
+  </mitre>
+
+  <group>ot-sentinel,opcua,unauthorized_command,critical_severity</group>
+</rule>

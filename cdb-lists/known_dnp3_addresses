@@ -1,0 +1,26 @@
+# OT Sentinel — Known DNP3 Data Link Addresses CDB List
+# =====================================================
+# Format: ADDRESS:Description
+#
+# Used by rule 200018 (OT-SENTINEL-DNP-006) to detect DNP3 traffic from/to
+# unknown data link addresses.
+#
+# DNP3 data link addresses are 16-bit values (0-65519). Addresses 65520-65535
+# are reserved (65535 = broadcast).
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/known_dnp3_addresses</list>
+#
+# Tuning:
+# - Populate with all known DNP3 device addresses from your asset inventory
+# - Start empty for discovery mode (every address will alert once)
+
+# Known DNP3 Device Addresses
+1:Pump_Station_1_PLC
+2:Pump_Station_2_PLC
+10:Main_Substation_RTU
+11:Backup_Substation_RTU
+100:Water_Tower_RTU
+200:SCADA_Master
+
+# ===== ADD YOUR DEVICE ADDRESSES BELOW =====

@@ -1,0 +1,585 @@
+{
+  "name": "OT Sentinel \u2014 ATT&CK for ICS Coverage",
+  "versions": {
+    "attack": "16",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "ics-attack",
+  "description": "OT Sentinel detection rule coverage mapped to MITRE ATT&CK for ICS. Green = tested rules, Orange = experimental rules. Generated: 2026-05-27. Rules loaded: 7 technique(s) covered.",
+  "filters": {
+    "platforms": [
+      "Field Controller/RTU/PLC/IED",
+      "Human-Machine Interface",
+      "Engineering Workstation",
+      "SCADA Server",
+      "Data Historian"
+    ]
+  },
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "average",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false,
+    "expandedSubdomains": "operating-systems"
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T0817",
+      "tactic": "initial-access",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0861",
+      "tactic": "initial-access",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0862",
+      "tactic": "initial-access",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0886",
+      "tactic": "initial-access",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0803",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0805",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0806",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0855",
+      "tactic": "execution",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0869",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0870",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0871",
+      "tactic": "execution",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0833",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0838",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0857",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0877",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0891",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0893",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0894",
+      "tactic": "persistence",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0890",
+      "tactic": "privilege-escalation",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0891",
+      "tactic": "privilege-escalation",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0821",
+      "tactic": "evasion",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0834",
+      "tactic": "evasion",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0858",
+      "tactic": "evasion",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0873",
+      "tactic": "evasion",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0892",
+      "tactic": "evasion",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0840",
+      "tactic": "discovery",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0842",
+      "tactic": "discovery",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0846",
+      "tactic": "discovery",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0882",
+      "tactic": "discovery",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0884",
+      "tactic": "discovery",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0888",
+      "tactic": "discovery",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0808",
+      "tactic": "lateral-movement",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0812",
+      "tactic": "lateral-movement",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0843",
+      "tactic": "lateral-movement",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0866",
+      "tactic": "lateral-movement",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0895",
+      "tactic": "lateral-movement",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0802",
+      "tactic": "collection",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0852",
+      "tactic": "collection",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0881",
+      "tactic": "collection",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0801",
+      "tactic": "command-and-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0856",
+      "tactic": "command-and-control",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0869",
+      "tactic": "command-and-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0885",
+      "tactic": "command-and-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0804",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0807",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0816",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0820",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0859",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0876",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0878",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0879",
+      "tactic": "inhibit-response-function",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0800",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0809",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0810",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0813",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0814",
+      "tactic": "impair-process-control",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0820",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0831",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0832",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0836",
+      "tactic": "impair-process-control",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0837",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0855",
+      "tactic": "impair-process-control",
+      "color": "#ff9800",
+      "comment": "Covered \u2014 experimental (pending lab test)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0859",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0867",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0868",
+      "tactic": "impair-process-control",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0815",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0817",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0826",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0827",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0828",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0829",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0883",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T0889",
+      "tactic": "impact",
+      "color": "#f5f5f5",
+      "comment": "No detection coverage yet",
+      "enabled": true
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#f5f5f5",
+      "#ff9800",
+      "#4caf50"
+    ],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Tested (lab-validated)",
+      "color": "#4caf50"
+    },
+    {
+      "label": "Experimental (pending test)",
+      "color": "#ff9800"
+    },
+    {
+      "label": "No coverage",
+      "color": "#f5f5f5"
+    }
+  ],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#e8e8e8",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubTechniquesWithParent": false,
+  "selectVisibleTechniques": true,
+  "metadata": [
+    {
+      "name": "project",
+      "value": "OT Sentinel"
+    },
+    {
+      "name": "author",
+      "value": "Subhash Bharadwaj"
+    },
+    {
+      "name": "techniques_covered",
+      "value": "7"
+    }
+  ]
+}

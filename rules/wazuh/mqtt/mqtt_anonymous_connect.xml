@@ -1,0 +1,49 @@
+<!--
+  Rule: OT-SENTINEL-MQTT-001
+  Protocol: MQTT (TCP 1883 / TLS 8883)
+  Attack Pattern: Anonymous Connection
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: Medium (8/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects MQTT CONNECT packets with no username and no password — an
+  anonymous connection. MQTT brokers often allow anonymous connections
+  by default. An attacker connecting anonymously can:
+  - Subscribe to topics and harvest data (recon)
+  - Publish to topics and inject false data (spoofing)
+  - Publish to control topics and manipulate equipment
+
+  Anonymous MQTT is the OT equivalent of an open Telnet port — it should
+  never exist in production. All MQTT clients must authenticate.
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+-->
+<rule id="200030" level="8">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">mqtt</field>
+  <field name="packet_type">^CONNECT$</field>
+
+  <!-- Username is null/empty AND no password flag -->
+  <field name="username">^$|^null$|^None$</field>
+  <field name="password_flag">^false$|^0$</field>
+
+  <description>
+    OT Sentinel: Anonymous MQTT connection detected.
+    Client ID: $(client_id) from $(source_ip):$(source_port)
+    Connected to broker $(destination_ip):$(destination_port)
+    No username or password provided — anonymous access enabled.
+    This allows unauthenticated publish/subscribe to all topics.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,mqtt,unauthorized_access,medium_severity</group>
+</rule>

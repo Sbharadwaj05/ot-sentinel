@@ -1,0 +1,53 @@
+<!--
+  Rule: OT-SENTINEL-MOD-003
+  Protocol: Modbus TCP
+  Attack Pattern: Rogue Master Detection
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Medium (10/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects Modbus traffic from a source IP that has never been observed on the
+  OT network before. This is a strong indicator of an unauthorized device
+  connecting — an attacker's laptop, a compromised IT device pivoting into OT,
+  or rogue hardware. Uses the known_modbus_masters CDB list (populated over time
+  as legitimate masters are observed).
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - CDB List: cdb-lists/known_modbus_masters (copy to /var/ossec/etc/lists/)
+  - Log source: modbus_tap.py JSON output to Wazuh agent
+
+  Tuning:
+  - Start with an empty known_modbus_masters list — every Modbus IP will alert
+    once, then manually add the legitimate ones
+  - After initial learning period (1-2 weeks), all legitimate masters should
+    be in the list and you'll only get alerts for true rogues
+-->
+<rule id="200003" level="10">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="event_type">^request$</field>
+
+  <!-- Alert if this Modbus master IP has never been seen before -->
+  <list field="source_ip" lookup="not_match_key">etc/lists/known_modbus_masters</list>
+
+  <description>
+    OT Sentinel: Rogue Modbus master detected — first time seen on network.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    Unit ID: $(unit_id)
+    This IP has never been observed communicating Modbus before.
+    If legitimate, add to known_modbus_masters CDB list.
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,network_intrusion,medium_severity</group>
+</rule>

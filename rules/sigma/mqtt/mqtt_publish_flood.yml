@@ -1,0 +1,39 @@
+title: OT Sentinel - MQTT High-Frequency Publish Flood
+id: 550e8400-e29b-41d4-a716-446655440033
+status: experimental
+description: |
+  Detects abnormally high MQTT publish rates from a single client.
+  MQTT publish flooding can overwhelm the broker, saturate OT network
+  bandwidth, or represent a sensor-spoofing DoS attack.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0814/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0814
+  - ot.mqtt
+  - detection.denial_of_service
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: mqtt
+    packet_type: PUBLISH
+  condition: selection | count(source_ip) > 500
+  timeframe: 5m
+falsepositives:
+  - High-frequency sensor arrays (vibration monitoring, synchrophasor)
+  - Burst telemetry during event conditions
+  - Bulk data upload from data historian
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MQTT-004
+  ot_sentinel_protocol: mqtt
+  ot_sentinel_attack_class: denial_of_service
+  wazuh_rule_ids:
+    - 200033
+    - 200034
+  threshold: "500 publishes per 5 minutes per source IP"

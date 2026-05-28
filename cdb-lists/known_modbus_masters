@@ -1,0 +1,25 @@
+# OT Sentinel — Known Modbus Masters CDB List
+# ==========================================
+# Format: IP_ADDRESS:Description
+#
+# This list tracks ALL Modbus master IPs ever observed on the network.
+# Used by rule 200003 (OT-SENTINEL-MOD-003) to detect new/rogue masters.
+#
+# Tuning strategy for MOD-003:
+# 1. Start with this file EMPTY (delete all entries below)
+# 2. Deploy rule 200003 — every Modbus IP will alert once
+# 3. For each alert, investigate: is this IP legitimate?
+# 4. If legitimate, ADD it to this list
+# 5. After 1-2 weeks, all legitimate masters are listed
+# 6. Future alerts represent true rogue devices
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/known_modbus_masters</list>
+
+# KNOWN LEGITIMATE MASTERS — populate during learning period
+# Format: IP:Description
+
+# ===== ADD MASTERS BELOW AS YOU DISCOVER THEM =====
+# Example (remove after learning):
+# 192.168.1.10:SCADA Primary
+# 192.168.1.11:SCADA Backup

@@ -1,0 +1,46 @@
+title: OT Sentinel - MQTT Retained Message Poisoning
+id: 550e8400-e29b-41d4-a716-446655440032
+status: experimental
+description: |
+  Detects MQTT PUBLISH with Retain=true on sensitive control topics.
+  Retained messages persist in the broker and are delivered to every
+  new subscriber — an attacker can poison the broker to inject false
+  commands that persist after disconnect (OT "stored XSS").
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0856/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0856
+  - ot.mqtt
+  - detection.data_integrity
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: mqtt
+    packet_type: PUBLISH
+    retain|in:
+      - 'true'
+      - '1'
+    topic|startswith:
+      - control/
+      - alarm/critical
+      - setpoint/
+      - cmd/
+      - command/
+  condition: selection
+falsepositives:
+  - Configuration server publishing initial retained values on startup
+  - SCADA system publishing current set-points as retained for HMI sync
+  - Known legitimate retained publishers (add to filter list)
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MQTT-003
+  ot_sentinel_protocol: mqtt
+  ot_sentinel_attack_class: data_integrity
+  wazuh_rule_id: 200032
+  note: "Customize topic patterns for your environment"

@@ -1,0 +1,163 @@
+{
+  "name": "OT Sentinel — ATT&CK for ICS Matrix",
+  "description": "Full MITRE ATT&CK for ICS matrix with OT Sentinel coverage annotations",
+  "generated": "2026-05-27",
+  "domain": "ics-attack",
+  "version": "16",
+  "tactics": {
+    "initial-access": {
+      "name": "Initial Access",
+      "techniques": {
+        "T0817": {"name": "Drive-by Compromise", "ot_sentinel_coverage": false},
+        "T0861": {"name": "Exploit Public-Facing Application", "ot_sentinel_coverage": false},
+        "T0862": {"name": "Supply Chain Compromise", "ot_sentinel_coverage": false},
+        "T0886": {"name": "Spearphishing Attachment", "ot_sentinel_coverage": false}
+      }
+    },
+    "execution": {
+      "name": "Execution",
+      "techniques": {
+        "T0803": {"name": "Block Command Message", "ot_sentinel_coverage": false},
+        "T0805": {"name": "Command-Line Interface", "ot_sentinel_coverage": false},
+        "T0806": {"name": "Modify Controller Tasking", "ot_sentinel_coverage": false},
+        "T0855": {
+          "name": "Unauthorized Command Message",
+          "ot_sentinel_coverage": true,
+          "ot_sentinel_rules": ["OT-SENTINEL-MOD-001"],
+          "status": "experimental"
+        },
+        "T0869": {"name": "Standard Application Layer Protocol", "ot_sentinel_coverage": false},
+        "T0870": {"name": "User Execution", "ot_sentinel_coverage": false},
+        "T0871": {"name": "Graphical User Interface", "ot_sentinel_coverage": false}
+      }
+    },
+    "persistence": {
+      "name": "Persistence",
+      "techniques": {
+        "T0833": {"name": "Modify Program", "ot_sentinel_coverage": false},
+        "T0838": {"name": "Modify Alarm Settings", "ot_sentinel_coverage": false},
+        "T0857": {"name": "System Firmware", "ot_sentinel_coverage": false},
+        "T0877": {"name": "Module Firmware", "ot_sentinel_coverage": false},
+        "T0891": {"name": "Hardcoded Credentials", "ot_sentinel_coverage": false},
+        "T0893": {"name": "Valid Accounts", "ot_sentinel_coverage": false},
+        "T0894": {"name": "Project File Infection", "ot_sentinel_coverage": false}
+      }
+    },
+    "privilege-escalation": {
+      "name": "Privilege Escalation",
+      "techniques": {
+        "T0890": {"name": "Exploitation for Privilege Escalation", "ot_sentinel_coverage": false},
+        "T0891": {"name": "Hardcoded Credentials", "ot_sentinel_coverage": false}
+      }
+    },
+    "evasion": {
+      "name": "Evasion",
+      "techniques": {
+        "T0821": {"name": "Masquerading", "ot_sentinel_coverage": false},
+        "T0834": {"name": "Rogue Master", "ot_sentinel_coverage": false},
+        "T0858": {"name": "Spoof Reporting Message", "ot_sentinel_coverage": false},
+        "T0873": {"name": "Connection Proxy", "ot_sentinel_coverage": false},
+        "T0892": {"name": "Change Operating Mode", "ot_sentinel_coverage": false}
+      }
+    },
+    "discovery": {
+      "name": "Discovery",
+      "techniques": {
+        "T0840": {"name": "Network Connection Enumeration", "ot_sentinel_coverage": false},
+        "T0842": {"name": "Network Sniffing", "ot_sentinel_coverage": false},
+        "T0846": {"name": "Remote System Discovery", "ot_sentinel_coverage": false},
+        "T0882": {"name": "Network Service Discovery", "ot_sentinel_coverage": false},
+        "T0884": {"name": "Remote System Information Discovery", "ot_sentinel_coverage": false},
+        "T0888": {"name": "System Information Discovery", "ot_sentinel_coverage": false}
+      }
+    },
+    "lateral-movement": {
+      "name": "Lateral Movement",
+      "techniques": {
+        "T0808": {"name": "Default Credentials", "ot_sentinel_coverage": false},
+        "T0812": {"name": "Exploitation of Remote Services", "ot_sentinel_coverage": false},
+        "T0843": {"name": "Program Download", "ot_sentinel_coverage": false},
+        "T0866": {"name": "Lateral Tool Transfer", "ot_sentinel_coverage": false},
+        "T0895": {"name": "Remote Services", "ot_sentinel_coverage": false}
+      }
+    },
+    "collection": {
+      "name": "Collection",
+      "techniques": {
+        "T0802": {"name": "Automated Collection", "ot_sentinel_coverage": false},
+        "T0852": {"name": "Input Capture", "ot_sentinel_coverage": false},
+        "T0881": {"name": "Point & Tag Identification", "ot_sentinel_coverage": false}
+      }
+    },
+    "command-and-control": {
+      "name": "Command and Control",
+      "techniques": {
+        "T0801": {"name": "Commonly Used Port", "ot_sentinel_coverage": false},
+        "T0856": {"name": "Spoof Reporting Message", "ot_sentinel_coverage": false},
+        "T0869": {"name": "Standard Application Layer Protocol", "ot_sentinel_coverage": false},
+        "T0885": {"name": "Connection Proxy", "ot_sentinel_coverage": false}
+      }
+    },
+    "inhibit-response-function": {
+      "name": "Inhibit Response Function",
+      "techniques": {
+        "T0804": {"name": "Activate Firmware Update Mode", "ot_sentinel_coverage": false},
+        "T0807": {"name": "Alarm Suppression", "ot_sentinel_coverage": false},
+        "T0816": {"name": "Device Restart/Shutdown", "ot_sentinel_coverage": false},
+        "T0820": {"name": "Denial of View", "ot_sentinel_coverage": false},
+        "T0859": {"name": "Man in the Middle", "ot_sentinel_coverage": false},
+        "T0876": {"name": "Modify Parameter", "ot_sentinel_coverage": false},
+        "T0878": {"name": "Rootkit", "ot_sentinel_coverage": false},
+        "T0879": {"name": "Service Stop", "ot_sentinel_coverage": false}
+      }
+    },
+    "impair-process-control": {
+      "name": "Impair Process Control",
+      "techniques": {
+        "T0800": {"name": "Brute Force I/O", "ot_sentinel_coverage": false},
+        "T0809": {"name": "Damage to Property", "ot_sentinel_coverage": false},
+        "T0810": {"name": "Denial of Control", "ot_sentinel_coverage": false},
+        "T0813": {"name": "Denial of Service via Malicious Network Traffic", "ot_sentinel_coverage": false},
+        "T0814": {"name": "Denial of Service", "ot_sentinel_coverage": false},
+        "T0820": {"name": "Denial of View", "ot_sentinel_coverage": false},
+        "T0831": {"name": "Manipulation of Control", "ot_sentinel_coverage": false},
+        "T0832": {"name": "Manipulation of View", "ot_sentinel_coverage": false},
+        "T0836": {"name": "Modify Parameter", "ot_sentinel_coverage": false},
+        "T0837": {"name": "Module Firmware", "ot_sentinel_coverage": false},
+        "T0855": {
+          "name": "Unauthorized Command Message",
+          "ot_sentinel_coverage": true,
+          "ot_sentinel_rules": ["OT-SENTINEL-MOD-001"],
+          "status": "experimental"
+        },
+        "T0859": {"name": "Man in the Middle", "ot_sentinel_coverage": false},
+        "T0867": {"name": "Loss of Safety", "ot_sentinel_coverage": false},
+        "T0868": {"name": "Parametric Model", "ot_sentinel_coverage": false}
+      }
+    },
+    "impact": {
+      "name": "Impact",
+      "techniques": {
+        "T0815": {"name": "Denial of View", "ot_sentinel_coverage": false},
+        "T0817": {"name": "Drive-by Compromise", "ot_sentinel_coverage": false},
+        "T0826": {"name": "Loss of Availability", "ot_sentinel_coverage": false},
+        "T0827": {"name": "Loss of Control", "ot_sentinel_coverage": false},
+        "T0828": {"name": "Loss of Productivity and Revenue", "ot_sentinel_coverage": false},
+        "T0829": {"name": "Loss of Safety", "ot_sentinel_coverage": false},
+        "T0883": {"name": "Loss of Protection", "ot_sentinel_coverage": false},
+        "T0889": {"name": "Manipulation of Control", "ot_sentinel_coverage": false}
+      }
+    }
+  },
+  "summary": {
+    "total_techniques": 76,
+    "techniques_covered": 1,
+    "techniques_remaining": 75,
+    "coverage_percentage": 1.3,
+    "phase_1_target": 8,
+    "phase_2_target": 16,
+    "phase_3_target": 24,
+    "phase_4_target": 34,
+    "phase_5_target": 34
+  }
+}

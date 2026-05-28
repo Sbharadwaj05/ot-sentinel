@@ -1,0 +1,51 @@
+<!--
+  Rule: OT-SENTINEL-MOD-002
+  Protocol: Modbus TCP
+  Attack Pattern: Unauthorized Register Write
+  ATT&CK for ICS: T0836 - Modify Parameter
+  Severity: High (12/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects Modbus write commands to holding registers (function codes 06 and 16)
+  originating from source IPs not present in the authorized Modbus masters CDB
+  list. Holding register writes modify operational parameters — set-points,
+  PID constants, alarm thresholds. An unauthorized register write could silently
+  alter process behavior without directly tripping physical safety limits.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - CDB List: cdb-lists/authorized_modbus_masters (copy to /var/ossec/etc/lists/)
+  - Log source: modbus_tap.py JSON output to Wazuh agent
+
+  Note: Rule ID 200002 used instead of 200003 to maintain gap for MOD-001 future
+  companion rule (first-seen notification at level 5).
+-->
+<rule id="200002" level="12">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="function_code">^(6|16)$</field>
+  <field name="event_type">^request$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_modbus_masters</list>
+
+  <description>
+    OT Sentinel: Unauthorized Modbus register write detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    Register: $(reference_number)
+    Data: $(data)
+    Count: $(count)
+    Transaction: $(transaction_id)
+  </description>
+
+  <mitre>
+    <id>T0836</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,unauthorized_command,high_severity</group>
+</rule>

@@ -1,0 +1,48 @@
+<!--
+  Rule: OT-SENTINEL-MQTT-002
+  Protocol: MQTT (TCP 1883 / TLS 8883)
+  Attack Pattern: Wildcard Topic Subscription
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Medium (9/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects MQTT SUBSCRIBE packets with multi-level wildcard topic patterns
+  (#). The # wildcard subscribes to ALL subtopics at that level — a single
+  subscription can harvest data from hundreds of sensors. Legitimate use
+  cases are extremely rare and should be explicitly known.
+
+  MQTT wildcards:
+  - "+" single-level: matches one topic level (less dangerous)
+  - "#" multi-level: matches ALL remaining levels (mass data harvest)
+  - Example: "sensors/+/temperature" = OK, "sensors/#" = DANGER
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+-->
+<rule id="200031" level="9">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">mqtt</field>
+  <field name="packet_type">^SUBSCRIBE$</field>
+
+  <!-- Topic contains # (multi-level wildcard) -->
+  <field name="topic">#</field>
+
+  <description>
+    OT Sentinel: MQTT wildcard subscription detected.
+    Client ID: $(client_id) from $(source_ip):$(source_port)
+    Subscribed to: $(topic)
+    The # wildcard harvests ALL subtopics — possible data exfiltration.
+    Legitimate uses of # are extremely rare in OT environments.
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,mqtt,reconnaissance,medium_severity</group>
+</rule>

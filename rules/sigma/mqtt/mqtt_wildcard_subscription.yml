@@ -1,0 +1,37 @@
+title: OT Sentinel - MQTT Wildcard Topic Subscription
+id: 550e8400-e29b-41d4-a716-446655440031
+status: experimental
+description: |
+  Detects MQTT SUBSCRIBE packets with multi-level wildcard (#) topic
+  patterns. The # wildcard subscribes to ALL subtopics — a single
+  subscription can harvest data from hundreds of sensors. Mass data
+  harvest for reconnaissance or exfiltration.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.mqtt
+  - detection.reconnaissance
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: mqtt
+    packet_type: SUBSCRIBE
+    topic|contains: '#'
+  condition: selection
+falsepositives:
+  - Data historian subscribing to all sensor topics (known client)
+  - Configuration management tool auditing full topic tree
+  - MQTT bridge replicating topics between brokers
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MQTT-002
+  ot_sentinel_protocol: mqtt
+  ot_sentinel_attack_class: reconnaissance
+  wazuh_rule_id: 200031

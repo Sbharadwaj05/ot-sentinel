@@ -1,0 +1,51 @@
+<!--
+  Rule: OT-SENTINEL-MQTT-005
+  Protocol: MQTT (TCP 1883 / TLS 8883)
+  Attack Pattern: Rogue Client — Unknown Client ID
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Medium (7/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects MQTT CONNECT packets with client IDs not present in the known
+  clients CDB list. A new/unknown client ID indicates:
+  - An attacker connecting to the broker
+  - A newly deployed legitimate client (needs adding to the list)
+  - A misconfigured device with wrong client ID
+
+  MQTT client IDs SHOULD be unique per device and SHOULD be known in
+  advance. An unknown client ID is a strong indicator of unauthorized access.
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+  - CDB List: cdb-lists/known_mqtt_clients
+
+  Tuning:
+  - Start with empty list for discovery mode
+  - Add each legitimate client ID as it appears
+  - After learning period, only rogue clients will alert
+-->
+<rule id="200035" level="7">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">mqtt</field>
+  <field name="packet_type">^CONNECT$</field>
+
+  <list field="client_id" lookup="not_match_key">etc/lists/known_mqtt_clients</list>
+
+  <description>
+    OT Sentinel: Unknown MQTT client ID detected.
+    Client ID: $(client_id) from $(source_ip):$(source_port)
+    This client ID has never been observed before.
+    If legitimate, add to known_mqtt_clients CDB list.
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,mqtt,network_intrusion,medium_severity</group>
+</rule>

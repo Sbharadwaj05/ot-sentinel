@@ -1,0 +1,69 @@
+<!--
+  OT Sentinel — IEC 60870-5-104 Decoder
+  ======================================
+  Parses JSON-formatted IEC 104 traffic logs for Wazuh ingestion.
+
+  Expected log format (from iec104_tap.py or equivalent):
+  {
+    "protocol": "iec104",
+    "timestamp": "2026-05-28T10:00:00.000Z",
+    "source_ip": "192.168.1.50",
+    "source_port": 54321,
+    "destination_ip": "192.168.1.100",
+    "destination_port": 2404,
+    "apdu_type": "I",
+    "control_function": null,
+    "asdu_type_id": 45,
+    "asdu_type_name": "C_SC_NA",
+    "cot": 6,
+    "cot_name": "activation",
+    "common_address": 1,
+    "ioa": 100,
+    "ioa_count": 1,
+    "event_type": "request"
+  }
+
+  Field definitions:
+  - apdu_type: "I" (information), "S" (supervisory), "U" (unnumbered control)
+  - control_function: null for I/S frames; "STARTDT_act", "STARTDT_con",
+    "STOPDT_act", "STOPDT_con", "TESTFR_act", "TESTFR_con" for U frames
+  - asdu_type_id: ASDU type identifier (1-255)
+  - cot: Cause of transmission (1-63)
+  - common_address: Station/common address (1-65535)
+  - ioa: Information Object Address (0-16777215)
+
+  Installation: Copy to /var/ossec/etc/decoders/
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+-->
+
+<!-- ============================================================
+     Parent Decoder: Identifies IEC 104 traffic via program_name
+     ============================================================ -->
+<decoder name="iec104-tap">
+  <program_name>^iec104_tap$</program_name>
+</decoder>
+
+<decoder name="iec104-tap-fields">
+  <parent>iec104-tap</parent>
+  <type>json</type>
+  <!-- All JSON fields extracted automatically:
+       protocol, source_ip, source_port, destination_ip, destination_port,
+       apdu_type, control_function, asdu_type_id, asdu_type_name,
+       cot, cot_name, common_address, ioa, ioa_count, event_type -->
+</decoder>
+
+
+<!-- ============================================================
+     Syslog-based ingestion alternative
+     ============================================================ -->
+<decoder name="iec104-syslog">
+  <program_name>^syslog$</program_name>
+</decoder>
+
+<decoder name="iec104-syslog-fields">
+  <parent>iec104-syslog</parent>
+  <type>json</type>
+  <prematch>{</prematch>
+</decoder>

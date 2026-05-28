@@ -1,0 +1,42 @@
+title: OT Sentinel - DNP3 Sequence Number Regression (Replay)
+id: 550e8400-e29b-41d4-a716-446655440014
+status: experimental
+description: |
+  Detects repeated DNP3 messages with abnormally low sequence numbers (0-2)
+  from the same source — a strong indicator of replay attacks. Replay tools
+  restart sequence counters from 0 when retransmitting captured traffic.
+  Each cycle of seq 0-2 represents one replay attempt.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0856/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0856
+  - ot.dnp3
+  - detection.replay_attack
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: request
+    sequence_number|lte: 2
+  condition: selection | count(source_ip) > 3
+  timeframe: 5m
+falsepositives:
+  - Legitimate DNP3 session re-establishment after network flap
+  - Multiple devices reconnecting after SCADA server restart
+  - DNP3 TCP connection reset and re-establishment
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-005
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: replay_attack
+  wazuh_rule_ids:
+    - 200017
+    - 200018
+  threshold: "3 seq-0-2 occurrences per 5 minutes per source IP"
+  limitation: "Imperfect heuristic — true replay detection requires stateful tracking"

@@ -1,0 +1,37 @@
+title: OT Sentinel - DNP3 Broadcast Command Abuse
+id: 550e8400-e29b-41d4-a716-446655440012
+status: experimental
+description: |
+  Detects DNP3 messages sent to the broadcast address (0xFFFF = 65535) or
+  other reserved addresses (65520-65534) at the data link layer. Broadcast
+  commands affect ALL devices simultaneously — cold restart all outstations,
+  disable unsolicited reporting, or mass control operations.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0855
+  - ot.dnp3
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: request
+    data_link_destination|gte: 65520
+  condition: selection
+falsepositives:
+  - DNP3 time synchronization broadcasts (legitimate but should be rare)
+  - Network discovery broadcast during commissioning phase
+  - Broadcast disable-unsolicited during firmware updates
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-003
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200014

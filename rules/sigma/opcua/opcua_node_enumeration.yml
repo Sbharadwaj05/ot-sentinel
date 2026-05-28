@@ -1,0 +1,39 @@
+title: OT Sentinel - OPC-UA Node Enumeration (Reconnaissance)
+id: 550e8400-e29b-41d4-a716-446655440041
+status: experimental
+description: |
+  Detects unusually high frequency of OPC-UA Browse requests — the
+  attacker is mapping the server's node tree to discover available
+  data points, control objects, and methods for later exploitation.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.opcua
+  - detection.reconnaissance
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: opcua
+    service_type: Browse
+  condition: selection | count(source_ip) > 100
+  timeframe: 5m
+falsepositives:
+  - SCADA HMI performing initial node tree discovery
+  - Engineering tool browsing device configuration
+  - OPC-UA client library performing auto-discovery
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-OPC-002
+  ot_sentinel_protocol: opcua
+  ot_sentinel_attack_class: reconnaissance
+  wazuh_rule_ids:
+    - 200037
+    - 200038
+  threshold: "100 Browse requests per 5 minutes per source IP"

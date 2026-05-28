@@ -1,0 +1,40 @@
+title: OT Sentinel - IEC 104 ASDU IOA Anomaly
+id: 550e8400-e29b-41d4-a716-446655440025
+status: experimental
+description: |
+  Detects IEC 104 ASDU messages referencing Information Object Addresses
+  not in the known IOA list. Unknown IOAs may indicate ASDU spoofing,
+  probing for undocumented control points, or misconfiguration.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0836/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0836
+  - ot.iec104
+  - detection.data_integrity
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: iec104
+    event_type: request
+  filter_known:
+    ioa|in:
+      - <known_ioa_1>
+      - <known_ioa_2>
+  condition: selection and not filter_known
+falsepositives:
+  - New data points added to RTU configuration
+  - SCADA system upgrade adding new measurement points
+  - Temporary test IOAs during commissioning
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-IEC-006
+  ot_sentinel_protocol: iec104
+  ot_sentinel_attack_class: data_integrity
+  wazuh_rule_id: 200029
+  requires_cdb_list: known_iec104_ioas

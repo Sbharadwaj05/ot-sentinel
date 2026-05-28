@@ -1,0 +1,79 @@
+<!--
+  Rule: OT-SENTINEL-OPC-002a (Parent)
+  Protocol: OPC-UA
+  Attack Pattern: Browse — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks OPC-UA Browse requests for frequency-based node enumeration
+  detection. Browse requests are normal (SCADA browses the node tree
+  to display data). Mass browsing indicates attacker mapping the OPC-UA
+  address space.
+
+  Dependencies:
+  - Decoder: opcua_decoder.xml
+  - Child rule: 200038 (OT-SENTINEL-OPC-002b)
+-->
+<rule id="200037" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">opcua</field>
+  <field name="service_type">^Browse$</field>
+
+  <description>OT Sentinel: OPC-UA Browse request (tracking only)</description>
+  <group>ot-sentinel,opcua,reconnaissance,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-OPC-002b (Child)
+  Protocol: OPC-UA
+  Attack Pattern: Node Enumeration — Reconnaissance
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Medium (7/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects unusually high frequency of OPC-UA Browse requests — the
+  attacker is mapping the server's node tree to discover available
+  data points, control objects, and methods.
+
+  OPC-UA servers expose a hierarchical node tree:
+  - Objects/Device1/Sensors/Temperature
+  - Objects/Device1/Control/Pump1/Start
+  - Types/...
+
+  Mass browsing reveals the entire address space, including control
+  methods the attacker can invoke.
+
+  Threshold: 100+ Browse requests from same source in 5 minutes.
+
+  Dependencies:
+  - Decoder: opcua_decoder.xml
+  - Parent rule: 200037 (OT-SENTINEL-OPC-002a)
+-->
+<rule id="200038" level="7">
+  <if_matched_sid>200037</if_matched_sid>
+
+  <frequency count="100" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: OPC-UA node enumeration detected — possible reconnaissance.
+    Source: $(source_ip) issued $(frequency) Browse requests in 5 minutes.
+    This indicates mapping of the OPC-UA server's node tree.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,opcua,reconnaissance,medium_severity</group>
+</rule>

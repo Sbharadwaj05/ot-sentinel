@@ -1,0 +1,45 @@
+title: OT Sentinel - Unauthorized Modbus Register Write
+id: 550e8400-e29b-41d4-a716-446655440002
+status: experimental
+description: |
+  Detects unauthorized Modbus holding register write commands (FC06/FC16)
+  from source IPs not in the authorized masters list. Register writes can
+  modify operational parameters — set-points, PID constants, alarm thresholds —
+  silently altering process behavior without directly activating physical outputs.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0836/
+  - https://modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0836
+  - ot.modbus
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: modbus
+    event_type: request
+    function_code|in:
+      - 6   # Write Single Register
+      - 16  # Write Multiple Registers
+  filter_authorized:
+    source_ip|in:
+      - <authorized_modbus_master_1>
+      - <authorized_modbus_master_2>
+  condition: selection and not filter_authorized
+falsepositives:
+  - Legitimate engineering workstation performing parameter changes
+  - SCADA server not yet added to CDB allowlist after IP change
+  - Remote support session from authorized vendor (temporary IP)
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-002
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200002
+  requires_cdb_list: authorized_modbus_masters

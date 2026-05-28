@@ -1,0 +1,21 @@
+# OT Sentinel — Known IEC 104 IOA Values CDB List
+# ================================================
+# Format: IOA_VALUE:Description
+#
+# Used by rule 200029 (OT-SENTINEL-IEC-006) to detect ASDU messages
+# referencing Information Object Addresses (IOAs) not previously observed.
+#
+# IOA values are 24-bit (0-16777215) and identify specific data points
+# within a device. New/unknown IOAs may indicate ASDU spoofing or injection.
+#
+# Tuning:
+# - Start empty for discovery mode (all IOAs alert once)
+# - Add each legitimate IOA as it's observed during learning period
+# - After learning period, only anomalous IOAs will alert
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/known_iec104_ioas</list>
+
+# ===== ADD KNOWN IOA VALUES BELOW =====
+# Format: IOA:Description
+# Example: 100:Circuit_Breaker_1_Status

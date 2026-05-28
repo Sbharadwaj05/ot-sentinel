@@ -1,0 +1,24 @@
+# OT Sentinel — Known DNP3 Outstations CDB List
+# =============================================
+# Format: DATA_LINK_ADDRESS:Description
+#
+# Used by rule 200012 (OT-SENTINEL-DNP-001) to detect unsolicited responses
+# from rogue/unknown outstation devices.
+#
+# The data link address is the DNP3 layer-2 address identifying each device.
+#
+# Deployment: Copy to /var/ossec/etc/lists/ and add to ossec.conf:
+#   <list>etc/lists/known_dnp3_outstations</list>
+#
+# Tuning:
+# - Populate with all legitimate outstation addresses from your asset inventory
+# - Empty list = all unsolicited responses will alert (discovery mode)
+
+# Known Outstations
+1:Pump_Station_1_PLC
+2:Pump_Station_2_PLC
+10:Main_Substation_RTU
+11:Backup_Substation_RTU
+100:Water_Tower_RTU
+
+# ===== ADD YOUR OUTSTATIONS BELOW =====

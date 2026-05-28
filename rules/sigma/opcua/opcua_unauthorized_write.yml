@@ -1,0 +1,40 @@
+title: OT Sentinel - Unauthorized OPC-UA Node Write
+id: 550e8400-e29b-41d4-a716-446655440042
+status: experimental
+description: |
+  Detects OPC-UA Write service requests from unauthorized source IPs.
+  OPC-UA Write can modify variable node values (set-points, thresholds),
+  invoke methods (trigger controls), and alter event filters.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0836/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0836
+  - ot.opcua
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: opcua
+    service_type: Write
+  filter_authorized:
+    source_ip|in:
+      - <authorized_client_1>
+      - <authorized_client_2>
+  condition: selection and not filter_authorized
+falsepositives:
+  - Engineering workstation modifying configuration parameters
+  - SCADA system updating set-points during normal operations
+  - Automated control loop adjusting process parameters
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-OPC-003
+  ot_sentinel_protocol: opcua
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200039
+  requires_cdb_list: authorized_opcua_clients

@@ -1,0 +1,44 @@
+title: OT Sentinel - Unauthorized DNP3 Direct Operate
+id: 550e8400-e29b-41d4-a716-446655440011
+status: experimental
+description: |
+  Detects DNP3 Direct Operate (FC 0x05) and Direct Operate No Acknowledge
+  (FC 0x06) commands from unauthorized source IPs. Direct Operate directly
+  controls physical outputs without select-before-operate safeguards.
+  Controls CROB operations: circuit breakers, valves, pumps, protective relays.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0855
+  - ot.dnp3
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: request
+    function_code|in:
+      - 5   # Direct Operate
+      - 6   # Direct Operate No Acknowledge
+  filter_authorized:
+    source_ip|in:
+      - <authorized_dnp3_master_1>
+      - <authorized_dnp3_master_2>
+  condition: selection and not filter_authorized
+falsepositives:
+  - Engineering workstation performing maintenance operations
+  - New SCADA server not yet in CDB allowlist
+  - Remote support vendor with temporary IP
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-002
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200013
+  requires_cdb_list: authorized_dnp3_masters

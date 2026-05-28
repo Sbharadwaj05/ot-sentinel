@@ -1,0 +1,62 @@
+<!--
+  Rule: OT-SENTINEL-MQTT-003
+  Protocol: MQTT (TCP 1883 / TLS 8883)
+  Attack Pattern: Retained Message Poisoning
+  ATT&CK for ICS: T0856 - Spoof Reporting Message
+  Severity: High (11/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects MQTT PUBLISH packets with the Retain flag set to true on topics
+  that match known sensitive/control patterns. Retained messages are stored
+  by the MQTT broker and delivered to EVERY new subscriber to that topic.
+
+  Attack scenario:
+  1. Attacker publishes a message to "control/pump/1/cmd" with retain=true
+     and payload "START"
+  2. Every new SCADA client that subscribes to this topic receives "START"
+  3. The pump runs — attacker achieved control without being connected
+
+  This is an OT-specific "stored XSS" equivalent — the attack persists in
+  the broker even after the attacker disconnects.
+
+  Sensitive topic pattern (customize for your environment):
+  - control/* — any control command topic
+  - alarm/critical/* — critical alarm topics
+  - setpoint/* — setpoint change topics
+
+  Dependencies:
+  - Decoder: mqtt_decoder.xml
+
+  Tuning:
+  - Customize the topic regex below to match YOUR sensitive topics
+  - Add known legitimate retained publishers (e.g., configuration servers)
+    to a CDB list and add a filter
+-->
+<rule id="200032" level="11">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">mqtt</field>
+  <field name="packet_type">^PUBLISH$</field>
+  <field name="retain">^true$|^1$</field>
+
+  <!-- Match sensitive topic patterns — customize for your environment -->
+  <field name="topic">^(control/|alarm/critical|setpoint/|cmd/|command/)</field>
+
+  <description>
+    OT Sentinel: Retained MQTT message on sensitive topic — possible poisoning.
+    Client ID: $(client_id) from $(source_ip)
+    Topic: $(topic) (Retained = true, QoS = $(qos))
+    Retained messages are delivered to all future subscribers.
+    An attacker can poison the broker to persist false commands.
+  </description>
+
+  <mitre>
+    <id>T0856</id>
+  </mitre>
+
+  <group>ot-sentinel,mqtt,data_integrity,high_severity</group>
+</rule>

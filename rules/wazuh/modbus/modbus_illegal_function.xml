@@ -1,0 +1,49 @@
+<!--
+  Rule: OT-SENTINEL-MOD-004
+  Protocol: Modbus TCP
+  Attack Pattern: Illegal Function Code
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: Medium (8/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects Modbus requests containing function codes outside the valid range
+  defined by the Modbus specification. Valid function codes are:
+  1-8, 11, 15-17, 20-24, 43. Any other function code in a request is a strong
+  indicator of protocol fuzzing, exploit development, or a severely misconfigured
+  device.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Log source: modbus_tap.py JSON output to Wazuh agent
+
+  Note: Function codes 128-255 (0x80+) are exception responses and are valid
+  in responses but NOT in requests. This rule explicitly matches requests only.
+-->
+<rule id="200004" level="8">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="event_type">^request$</field>
+
+  <!-- Valid function codes: 1-8, 11, 15-17, 20-24, 43 -->
+  <!-- Alert on anything outside this set -->
+  <field name="function_code" negate="yes">^(1|2|3|4|5|6|7|8|11|15|16|17|20|21|22|23|24|43)$</field>
+
+  <description>
+    OT Sentinel: Illegal Modbus function code detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function Code: $(function_code)
+    This function code is not defined in the Modbus specification.
+    Possible fuzzing, exploit attempt, or misconfigured device.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,protocol_fuzzing,medium_severity</group>
+</rule>

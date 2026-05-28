@@ -1,0 +1,57 @@
+<!--
+  Rule: OT-SENTINEL-IEC-006
+  Protocol: IEC 60870-5-104 (TCP 2404)
+  Attack Pattern: ASDU IOA Anomaly
+  ATT&CK for ICS: T0836 - Modify Parameter
+  Severity: Medium (8/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects IEC 104 ASDU messages referencing Information Object Addresses (IOAs)
+  not present in the known IOA CDB list. IOAs identify specific data points
+  within a device — an unknown IOA may indicate:
+  - ASDU spoofing (injecting fake data objects)
+  - Probing for undocumented control points
+  - A newly commissioned data point (legitimate, needs adding to list)
+  - Configuration error
+
+  IOAs are 24-bit values (0-16777215). This rule uses a CDB list to track
+  known/expected IOAs per deployment. During the learning period, every
+  new IOA will trigger an alert — add legitimate ones to suppress.
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - CDB List: cdb-lists/known_iec104_ioas
+
+  Tuning:
+  - Start with empty list for discovery mode
+  - After learning period (1-2 weeks), only anomalous IOAs will alert
+  - Consider adding IOA ranges rather than individual values for large deployments
+-->
+<rule id="200029" level="8">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">iec104</field>
+  <field name="event_type">^request$</field>
+
+  <!-- Alert if IOA is not in the known list -->
+  <list field="ioa" lookup="not_match_key">etc/lists/known_iec104_ioas</list>
+
+  <description>
+    OT Sentinel: Unknown IEC 104 IOA detected — possible ASDU spoofing.
+    Source: $(source_ip) -> $(destination_ip)
+    Common Address: $(common_address)
+    IOA: $(ioa) (not in known IOA list)
+    ASDU Type: $(asdu_type_id) ($(asdu_type_name))
+    If legitimate, add IOA $(ioa) to known_iec104_ioas CDB list.
+  </description>
+
+  <mitre>
+    <id>T0836</id>
+  </mitre>
+
+  <group>ot-sentinel,iec104,data_integrity,medium_severity</group>
+</rule>

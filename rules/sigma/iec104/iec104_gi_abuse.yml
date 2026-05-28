@@ -1,0 +1,41 @@
+title: OT Sentinel - IEC 104 General Interrogation Abuse
+id: 550e8400-e29b-41d4-a716-446655440023
+status: experimental
+description: |
+  Detects unusually frequent General Interrogation (GI) requests (ASDU 100).
+  Each GI causes the RTU to transmit its entire data model — thousands of
+  IOAs. Repeated GIs are reconnaissance: mapping the RTU's IOA space before
+  targeted command injection.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.iec104
+  - detection.reconnaissance
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: iec104
+    event_type: request
+    asdu_type_id: 100
+  condition: selection | count(source_ip) > 3
+  timeframe: 10m
+falsepositives:
+  - Multiple SCADA clients connecting after network outage
+  - System recovery after communication loss to multiple RTUs
+  - Commissioning phase with repeated GI for configuration verification
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-IEC-004
+  ot_sentinel_protocol: iec104
+  ot_sentinel_attack_class: reconnaissance
+  wazuh_rule_ids:
+    - 200025
+    - 200026
+  threshold: "3 GI requests per 10 minutes per source IP"

@@ -1,0 +1,41 @@
+title: OT Sentinel - DNP3 Authentication Message Spike
+id: 550e8400-e29b-41d4-a716-446655440013
+status: experimental
+description: |
+  Detects unusually high frequency of DNP3 Secure Authentication messages
+  (FC 0x20/0x83) from a single source — indicating brute-force attempts,
+  challenge replay, or SA bypass attempts against DNP3 SA v5.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0858/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0858
+  - ot.dnp3
+  - detection.authentication
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    function_code|in:
+      - 32   # Authenticate (0x20)
+      - 131  # Authenticate Response (0x83)
+  condition: selection | count(source_ip) > 10
+  timeframe: 5m
+falsepositives:
+  - Multiple DNP3 SA sessions being established simultaneously after network outage
+  - SA key rotation process (scheduled, should be known)
+  - Initial commissioning with SA enabled on all devices
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-004
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: authentication
+  wazuh_rule_ids:
+    - 200015  # parent (tracker)
+    - 200016  # child (alert)
+  threshold: "10 auth messages per 5 minutes per source IP"

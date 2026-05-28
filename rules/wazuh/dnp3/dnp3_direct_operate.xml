@@ -1,0 +1,58 @@
+<!--
+  Rule: OT-SENTINEL-DNP-002
+  Protocol: DNP3 (TCP/UDP, port 20000)
+  Attack Pattern: Direct Operate without Authorization
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (13/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects DNP3 Direct Operate commands (FC 0x05) and Direct Operate No
+  Acknowledge commands (FC 0x06) from source IPs not in the authorized DNP3
+  masters CDB list. Direct Operate is the DNP3 equivalent of a Modbus coil
+  write — it directly controls physical outputs without requiring a
+  select-before-operate sequence.
+
+  Control Relay Output Block (CROB) operations can:
+  - Latch ON/OFF a circuit breaker
+  - Pulse-close a valve
+  - Trip a protective relay
+  - Start/stop a pump or motor
+
+  This is arguably more dangerous than Modbus writes because DNP3 devices
+  typically control higher-risk infrastructure (substations, generators).
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml (must be loaded first)
+  - CDB List: cdb-lists/authorized_dnp3_masters
+  - Log source: dnp3_tap.py JSON output to Wazuh agent
+-->
+<rule id="200013" level="13">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <!-- FC 0x05 = Direct Operate, FC 0x06 = Direct Operate No Ack -->
+  <field name="function_code">^(5|6)$</field>
+  <field name="event_type">^request$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_dnp3_masters</list>
+
+  <description>
+    OT Sentinel: Unauthorized DNP3 Direct Operate command detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    Target Outstation: $(data_link_destination)
+    Object Group: $(object_group), Variation: $(object_variation)
+    Points: $(point_count)
+    This is a DIRECT CONTROL action — no select-before-operate safeguard.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,unauthorized_command,critical_severity</group>
+</rule>

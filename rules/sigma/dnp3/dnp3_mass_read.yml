@@ -1,0 +1,41 @@
+title: OT Sentinel - Mass DNP3 Data Read (Reconnaissance)
+id: 550e8400-e29b-41d4-a716-446655440016
+status: experimental
+description: |
+  Detects unusually high volume of DNP3 Read requests (FC 0x01) from a
+  single source — device enumeration / reconnaissance. The attacker maps
+  data points (binary inputs, analog inputs, counters) to identify targets
+  for later control manipulation.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.dnp3
+  - detection.reconnaissance
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: dnp3
+    event_type: request
+    function_code: 1
+  condition: selection | count(source_ip) > 100
+  timeframe: 5m
+falsepositives:
+  - SCADA system performing full database synchronization after restart
+  - Engineering workstation performing device audit/enumeration
+  - Data historian performing scheduled bulk data collection
+level: low
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-DNP-007
+  ot_sentinel_protocol: dnp3
+  ot_sentinel_attack_class: reconnaissance
+  wazuh_rule_ids:
+    - 200020
+    - 200021
+  threshold: "100 reads per 5 minutes per source IP"

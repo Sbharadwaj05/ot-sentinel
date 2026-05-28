@@ -1,0 +1,79 @@
+<!--
+  Rule: OT-SENTINEL-DNP-007a (Parent)
+  Protocol: DNP3
+  Attack Pattern: Mass Read — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks DNP3 Read requests (FC 0x01) for frequency-based recon detection.
+  Read requests are normal — but mass reads indicate device enumeration.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Child rule: 200021 (OT-SENTINEL-DNP-007b)
+-->
+<rule id="200020" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <field name="function_code">^(1)$</field>
+  <field name="event_type">^request$</field>
+
+  <description>OT Sentinel: DNP3 read request (tracking only)</description>
+  <group>ot-sentinel,dnp3,reconnaissance,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-DNP-007b (Child)
+  Protocol: DNP3
+  Attack Pattern: Mass Data Request — Reconnaissance
+  ATT&CK for ICS: T0846 - Remote System Discovery
+  Severity: Low (6/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects an unusually high volume of DNP3 Read requests (FC 0x01) from a
+  single source within a short time window. This is the DNP3 equivalent of
+  Modbus mass read reconnaissance — the attacker is mapping the device's
+  data points (binary inputs, analog inputs, counters, etc.) to identify
+  valuable targets for later control manipulation.
+
+  DNP3 Read requests can access:
+  - Binary Input objects (breaker status, valve position)
+  - Analog Input objects (voltage, current, pressure, temperature)
+  - Counter objects (energy metering, flow totals)
+  - Frozen Counter objects (snapshot readings)
+  - File objects (device configuration, firmware)
+
+  Threshold: 100+ reads from same source in 5 minutes.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml
+  - Parent rule: 200020 (OT-SENTINEL-DNP-007a)
+-->
+<rule id="200021" level="6">
+  <if_matched_sid>200020</if_matched_sid>
+
+  <frequency count="100" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: Mass DNP3 data read detected — possible reconnaissance.
+    Source: $(source_ip) issued $(frequency) read requests in 5 minutes.
+    This exceeds normal SCADA polling and indicates device enumeration.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0846</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,reconnaissance,low_severity</group>
+</rule>

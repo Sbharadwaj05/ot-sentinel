@@ -1,0 +1,59 @@
+<!--
+  Rule: OT-SENTINEL-OPC-001
+  Protocol: OPC-UA (TCP 4840)
+  Attack Pattern: Session Hijacking
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (12/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects OPC-UA ActivateSession requests with authentication tokens not
+  previously associated with the source IP. This may indicate session
+  hijacking — an attacker stealing a valid session token and using it
+  from a different IP address.
+
+  OPC-UA session lifecycle:
+  1. CreateSession → server returns session_id + auth_token
+  2. ActivateSession → client presents auth_token to activate
+  3. Read/Write/Browse → use active session
+  4. CloseSession → terminate
+
+  Hijacking: Attacker steals auth_token from legitimate client and
+  calls ActivateSession from a different IP.
+
+  Dependencies:
+  - Decoder: opcua_decoder.xml
+  - CDB List: cdb-lists/authorized_opcua_clients
+
+  Tuning: This rule alerts on ActivateSession from unauthorized IPs.
+  All SCADA/engineering IPs should be in the CDB list. ActivateSession
+  from unexpected IPs with valid tokens = session hijacking.
+-->
+<rule id="200036" level="12">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">opcua</field>
+  <field name="service_type">^ActivateSession$</field>
+
+  <list
+        field="source_ip"
+        lookup="not_match_key"
+    >etc/lists/authorized_opcua_clients</list>
+
+  <description>
+    OT Sentinel: OPC-UA ActivateSession from potentially hijacked source.
+    Source: $(source_ip):$(source_port)
+    Session ID: $(session_id), Auth Token: $(auth_token)
+    Security Policy: $(security_policy)
+    Verify that this IP is authorized to use this session token.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,opcua,session_hijack,high_severity</group>
+</rule>

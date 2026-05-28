@@ -1,0 +1,42 @@
+title: OT Sentinel - Unauthorized IEC 104 Double Command (C_DC_NA)
+id: 550e8400-e29b-41d4-a716-446655440022
+status: experimental
+description: |
+  Detects IEC 104 double command messages (ASDU type 46: C_DC_NA) from
+  unauthorized source IPs. C_DC_NA controls binary outputs with explicit
+  ON/OFF states — disconnectors, tap changers. Provides an extra safety
+  layer: the device must confirm state match.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0855
+  - ot.iec104
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: iec104
+    event_type: request
+    asdu_type_id: 46
+  filter_authorized:
+    source_ip|in:
+      - <authorized_client_1>
+      - <authorized_client_2>
+  condition: selection and not filter_authorized
+falsepositives:
+  - Legitimate maintenance switching operations
+  - Automatic voltage regulation via tap changer
+  - Scheduled isolation for maintenance
+level: high
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-IEC-003
+  ot_sentinel_protocol: iec104
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200024
+  requires_cdb_list: authorized_iec104_clients

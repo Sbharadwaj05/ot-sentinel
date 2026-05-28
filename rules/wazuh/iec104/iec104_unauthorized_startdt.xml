@@ -1,0 +1,48 @@
+<!--
+  Rule: OT-SENTINEL-IEC-001
+  Protocol: IEC 60870-5-104 (TCP 2404)
+  Attack Pattern: Unauthorized STARTDT
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (12/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects IEC 104 STARTDT (Start Data Transfer) activation frames from
+  source IPs not in the authorized clients CDB list. STARTDT initiates
+  the data transfer phase of an IEC 104 session — it's the equivalent
+  of "logging in" to the RTU. An unauthorized STARTDT means an attacker
+  is attempting to establish a control session.
+
+  The STARTDT → STOPDT lifecycle:
+  1. Client sends STARTDT_act → Server responds STARTDT_con
+  2. Data transfer (I-frames with ASDUs)
+  3. Client sends STOPDT_act → Server responds STOPDT_con
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - CDB List: cdb-lists/authorized_iec104_clients
+-->
+<rule id="200022" level="12">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">iec104</field>
+  <field name="control_function">^STARTDT_act$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_iec104_clients</list>
+
+  <description>
+    OT Sentinel: Unauthorized IEC 104 STARTDT detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    An unauthorized client is attempting to initiate data transfer.
+    This could enable ASDU injection and command manipulation.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,iec104,unauthorized_command,high_severity</group>
+</rule>

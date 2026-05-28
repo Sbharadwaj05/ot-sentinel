@@ -1,0 +1,78 @@
+<!--
+  Rule: OT-SENTINEL-IEC-005a (Parent)
+  Protocol: IEC 60870-5-104
+  Attack Pattern: TESTFR — Parent Tracker
+  Severity: 0 (tracking only)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Purpose:
+  Tracks IEC 104 TESTFR (Test Frame) messages. TESTFR is a keep-alive
+  mechanism — the client sends TESTFR_act and the server responds TESTFR_con.
+  Normal rate: 1 TESTFR every 10-60 seconds. Flooding TESTFR can cause
+  session instability, buffer overflow, or denial of service.
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - Child rule: 200028 (OT-SENTINEL-IEC-005b)
+-->
+<rule id="200027" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">iec104</field>
+  <!-- Match both TESTFR activation and confirmation -->
+  <field name="control_function">^TESTFR_(act|con)$</field>
+
+  <description>OT Sentinel: IEC 104 TESTFR frame (tracking only)</description>
+  <group>ot-sentinel,iec104,denial_of_service,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-IEC-005b (Child)
+  Protocol: IEC 60870-5-104
+  Attack Pattern: TESTFR Flooding
+  ATT&CK for ICS: T0814 - Denial of Service
+  Severity: Medium (8/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects IEC 104 TESTFR frames at an abnormally high rate — indicating a
+  denial-of-service attempt. TESTFR flooding can:
+  - Overwhelm the RTU's communication processor
+  - Cause session timeout and disconnection
+  - Prevent legitimate I-frame data transfer
+  - Trigger buffer overflow in poorly implemented stacks
+
+  Normal TESTFR rate: 1 per 10-60 seconds (6-60 per 10 min)
+  Attack rate: 100+ per minute (clearly anomalous)
+
+  Threshold: 200+ TESTFR frames in 5 minutes from same source.
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - Parent rule: 200027 (OT-SENTINEL-IEC-005a)
+-->
+<rule id="200028" level="8">
+  <if_matched_sid>200027</if_matched_sid>
+
+  <frequency count="200" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: IEC 104 TESTFR flooding detected — possible DoS.
+    Source: $(source_ip) sent $(frequency) TESTFR frames in 5 minutes.
+    Normal rate is 1 per 10-60 seconds — this is $(frequency)x higher.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0814</id>
+  </mitre>
+
+  <group>ot-sentinel,iec104,denial_of_service,medium_severity</group>
+</rule>

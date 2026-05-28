@@ -1,0 +1,43 @@
+title: OT Sentinel - Mass Modbus Register Read (Reconnaissance)
+id: 550e8400-e29b-41d4-a716-446655440005
+status: experimental
+description: |
+  Detects an unusually high volume of Modbus read commands (FC03/FC04)
+  from a single source IP within a 5-minute window. This is the Modbus
+  equivalent of a port scan — the attacker is enumerating device memory
+  to discover interesting control registers for later exploitation.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0846
+  - ot.modbus
+  - detection.reconnaissance
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: modbus
+    event_type: request
+    function_code|in:
+      - 3   # Read Holding Registers
+      - 4   # Read Input Registers
+  condition: selection | count(source_ip) > 50
+  timeframe: 5m
+falsepositives:
+  - SCADA HMI performing bulk data refresh after startup
+  - Data historian performing scheduled bulk collection
+  - Engineering workstation uploading/downloading PLC program
+level: low
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-005
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: reconnaissance
+  wazuh_rule_ids:
+    - 200005  # parent (tracker)
+    - 200006  # child (alert)
+  threshold: "50 reads per 5 minutes per source IP"

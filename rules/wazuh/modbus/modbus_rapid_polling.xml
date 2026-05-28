@@ -1,0 +1,76 @@
+<!--
+  Rule: OT-SENTINEL-MOD-006a (Parent)
+  Protocol: Modbus TCP
+  Attack Pattern: Rapid Polling — Parent Match Rule
+  Severity: 0 (tracking only — does not generate alerts)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Purpose:
+  Matches ALL Modbus requests (all function codes). This parent rule serves as
+  a tracker for the child rule (200008) which fires when the total request rate
+  from a single source exceeds the normal polling baseline.
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Child rule: 200008 (OT-SENTINEL-MOD-006b)
+-->
+<rule id="200007" level="0">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">modbus</field>
+  <field name="event_type">^request$</field>
+
+  <description>OT Sentinel: Modbus request (tracking only)</description>
+  <group>ot-sentinel,modbus,denial_of_service,tracker</group>
+</rule>
+
+
+<!--
+  Rule: OT-SENTINEL-MOD-006b (Child)
+  Protocol: Modbus TCP
+  Attack Pattern: Rapid Polling Detection
+  ATT&CK for ICS: T0814 - Denial of Service
+  Severity: Medium (8/15)
+  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-27
+
+  Description:
+  Detects a Modbus master flooding a device with requests at a rate far exceeding
+  normal polling intervals. This can degrade PLC performance, cause watchdog
+  timeouts, or trigger fail-safe states. More severe than MOD-005 because it
+  counts ALL function codes, not just reads.
+
+  Threshold:
+  - 200+ requests from same source IP in 5 minutes
+  - Normal polling: 1 request every 1-5 seconds ≈ 60-300 per 5 min
+  - Attack: 200+ in 5 min is clearly anomalous
+  - Tune based on your specific SCADA configuration
+
+  Dependencies:
+  - Decoder: modbus_decoder.xml (must be loaded first)
+  - Parent rule: 200007 (OT-SENTINEL-MOD-006a)
+-->
+<rule id="200008" level="8">
+  <if_matched_sid>200007</if_matched_sid>
+
+  <!-- Alert when 200+ requests from same source in 5 minutes -->
+  <frequency count="200" timeframe="300">5</frequency>
+  <same_source_ip />
+
+  <description>
+    OT Sentinel: Rapid Modbus polling detected — possible DoS.
+    Source: $(source_ip) issued $(frequency) requests in 5 minutes.
+    This rate far exceeds normal SCADA polling and may degrade PLC performance.
+    Target: $(destination_ip):$(destination_port)
+  </description>
+
+  <mitre>
+    <id>T0814</id>
+  </mitre>
+
+  <group>ot-sentinel,modbus,denial_of_service,medium_severity</group>
+</rule>

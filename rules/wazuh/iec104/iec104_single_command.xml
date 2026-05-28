@@ -1,0 +1,48 @@
+<!--
+  Rule: OT-SENTINEL-IEC-002
+  Protocol: IEC 60870-5-104 (TCP 2404)
+  Attack Pattern: C_SC_NA Single Command Injection
+  ATT&CK for ICS: T0855 - Unauthorized Command Message
+  Severity: High (13/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects IEC 104 single command messages (ASDU type 45: C_SC_NA) from
+  unauthorized source IPs. C_SC_NA directly controls a single binary output
+  — circuit breaker ON/OFF, valve OPEN/CLOSE, pump START/STOP. This is
+  the IEC 104 equivalent of Modbus FC05 (Write Single Coil).
+
+  C_SC_NA = Command Single Command, Normalized value (no time tag).
+  This is the most direct and dangerous control command in IEC 104.
+
+  Dependencies:
+  - Decoder: iec104_decoder.xml
+  - CDB List: cdb-lists/authorized_iec104_clients
+-->
+<rule id="200023" level="13">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">iec104</field>
+  <!-- ASDU type 45 = C_SC_NA (Single Command) -->
+  <field name="asdu_type_id">^45$</field>
+  <field name="event_type">^request$</field>
+
+  <list field="source_ip" lookup="not_match_key">etc/lists/authorized_iec104_clients</list>
+
+  <description>
+    OT Sentinel: Unauthorized IEC 104 single command (C_SC_NA) detected.
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Common Address: $(common_address), IOA: $(ioa)
+    Cause: $(cot) ($(cot_name))
+    This command directly controls a binary output — circuit breaker, valve, pump.
+  </description>
+
+  <mitre>
+    <id>T0855</id>
+  </mitre>
+
+  <group>ot-sentinel,iec104,unauthorized_command,critical_severity</group>
+</rule>

@@ -1,0 +1,40 @@
+title: OT Sentinel - Unknown MQTT Client ID (Rogue Client)
+id: 550e8400-e29b-41d4-a716-446655440034
+status: experimental
+description: |
+  Detects MQTT CONNECT packets with client IDs not in the known clients
+  list. A new/unknown client ID indicates a rogue device connecting to
+  the MQTT broker — possible unauthorized access or reconnaissance.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0846/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0846
+  - ot.mqtt
+  - detection.network_intrusion
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: mqtt
+    packet_type: CONNECT
+  filter_known:
+    client_id|in:
+      - <known_client_1>
+      - <known_client_2>
+  condition: selection and not filter_known
+falsepositives:
+  - New sensor being added to the OT network
+  - SCADA client restarting with ephemeral client ID
+  - Testing/commissioning new MQTT devices
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MQTT-005
+  ot_sentinel_protocol: mqtt
+  ot_sentinel_attack_class: network_intrusion
+  wazuh_rule_id: 200035
+  requires_cdb_list: known_mqtt_clients

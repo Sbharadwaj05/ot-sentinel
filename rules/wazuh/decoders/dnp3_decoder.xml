@@ -1,0 +1,74 @@
+<!--
+  OT Sentinel — DNP3 Decoder
+  ==========================
+  Parses JSON-formatted DNP3 traffic logs for Wazuh ingestion.
+
+  Expected log format (from dnp3_tap.py or equivalent network monitor):
+  {
+    "protocol": "dnp3",
+    "timestamp": "2026-05-28T10:00:00.000Z",
+    "source_ip": "192.168.1.50",
+    "source_port": 54321,
+    "destination_ip": "192.168.1.100",
+    "destination_port": 20000,
+    "data_link_source": 1,
+    "data_link_destination": 100,
+    "data_link_control": "0xC4",
+    "sequence_number": 15,
+    "function_code": 5,
+    "function_name": "direct_operate",
+    "internal_indications": "0x0000",
+    "object_group": 12,
+    "object_variation": 1,
+    "qualifier": "0x17",
+    "point_count": 1,
+    "event_type": "request"
+  }
+
+  Installation: Copy to /var/ossec/etc/decoders/
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+-->
+
+<!-- ============================================================
+     Parent Decoder: Identifies DNP3 traffic via program_name
+     ============================================================ -->
+<decoder name="dnp3-tap">
+  <program_name>^dnp3_tap$</program_name>
+</decoder>
+
+<decoder name="dnp3-tap-fields">
+  <parent>dnp3-tap</parent>
+  <type>json</type>
+  <!-- All JSON fields extracted automatically:
+       protocol, source_ip, source_port, destination_ip, destination_port,
+       data_link_source, data_link_destination, data_link_control,
+       sequence_number, function_code, function_name,
+       internal_indications, object_group, object_variation,
+       qualifier, point_count, event_type -->
+</decoder>
+
+
+<!-- ============================================================
+     Alternative: Syslog-based ingestion
+     ============================================================ -->
+<decoder name="dnp3-syslog">
+  <program_name>^syslog$</program_name>
+</decoder>
+
+<decoder name="dnp3-syslog-fields">
+  <parent>dnp3-syslog</parent>
+  <type>json</type>
+  <prematch>{</prematch>
+  <!-- Extracts all JSON fields from syslog messages containing
+       DNP3 traffic logs in JSON format -->
+</decoder>
+
+
+<!-- ============================================================
+     Decoder Test Cases (for wazuh-logtest validation)
+     ============================================================
+     Input: {"protocol":"dnp3","source_ip":"192.168.1.50","function_code":5,"data_link_source":1,"data_link_destination":100,"sequence_number":15,"event_type":"request"}
+     Expected output: protocol=dnp3, source_ip=192.168.1.50, function_code=5
+-->

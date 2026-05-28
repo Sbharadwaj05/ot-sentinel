@@ -1,0 +1,56 @@
+title: OT Sentinel - Unauthorized Modbus Coil Write
+id: 550e8400-e29b-41d4-a716-446655440001
+status: experimental
+description: |
+  Detects unauthorized Modbus coil write commands from source IPs not in
+  the authorized masters list. Coil writes (FC05/FC15) can directly control
+  physical outputs — motors, valves, pumps, relays — making unauthorized
+  writes a critical safety and operational risk.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+  - https://modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf
+author: Subhash Bharadwaj
+date: 2026/05/27
+tags:
+  - attack.ics.t0855
+  - ot.modbus
+  - detection.unauthorized_command
+logsource:
+  product: wazuh
+  category: ot_protocol
+  definition: |
+    Logs must be in JSON format as produced by modbus_tap.py. Each event
+    must contain: protocol, function_code, source_ip, event_type fields.
+
+detection:
+  selection:
+    protocol: modbus
+    event_type: request
+    function_code|in:
+      - 5   # Write Single Coil
+      - 15  # Write Multiple Coils
+  filter_authorized:
+    source_ip|in:
+      - <authorized_modbus_master_1>
+      - <authorized_modbus_master_2>
+      # Populate with your actual authorized Modbus master IPs
+      # Alternatively, use a Wazuh CDB list lookup
+  condition: selection and not filter_authorized
+
+falsepositives:
+  - New engineering workstation added to OT network without updating allowlist
+  - Temporary contractor laptop performing legitimate maintenance
+  - DHCP lease renewal causing source IP rotation for legitimate devices
+  - VLAN reconfiguration or network segmentation changes
+
+level: high
+
+# Additional metadata for OT Sentinel tooling
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MOD-001
+  ot_sentinel_protocol: modbus
+  ot_sentinel_attack_class: unauthorized_command
+  wazuh_rule_id: 200001
+  requires_cdb_list: authorized_modbus_masters

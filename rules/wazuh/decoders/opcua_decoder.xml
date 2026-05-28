@@ -1,0 +1,44 @@
+<!--
+  OT Sentinel — OPC-UA Decoder
+  =============================
+  Parses JSON-formatted OPC-UA traffic logs for Wazuh ingestion.
+
+  Expected log format:
+  {
+    "protocol": "opcua",
+    "timestamp": "2026-05-28T10:00:00.000Z",
+    "source_ip": "192.168.1.50",
+    "source_port": 54321,
+    "destination_ip": "192.168.1.100",
+    "destination_port": 4840,
+    "service_type": "Browse",
+    "session_id": "abc123",
+    "auth_token": "tok456",
+    "node_id": "ns=1;s=Temperature",
+    "security_policy": "Basic256Sha256",
+    "event_type": "request"
+  }
+
+  Installation: Copy to /var/ossec/etc/decoders/
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+-->
+<decoder name="opcua-tap">
+  <program_name>^opcua_tap$</program_name>
+</decoder>
+
+<decoder name="opcua-tap-fields">
+  <parent>opcua-tap</parent>
+  <type>json</type>
+</decoder>
+
+<decoder name="opcua-syslog">
+  <program_name>^syslog$</program_name>
+</decoder>
+
+<decoder name="opcua-syslog-fields">
+  <parent>opcua-syslog</parent>
+  <type>json</type>
+  <prematch>{</prematch>
+</decoder>

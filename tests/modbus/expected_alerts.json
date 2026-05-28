@@ -1,0 +1,46 @@
+{
+  "OT-SENTINEL-MOD-001": {
+    "rule_id": "200001",
+    "rule_name": "OT Sentinel - Unauthorized Modbus Coil Write",
+    "protocol": "modbus",
+    "attack_pattern": "unauthorized_coil_write",
+    "mitre_attack_ics": "T0855",
+    "level": 12,
+    "severity": "high",
+    "expected_fields": {
+      "protocol": "modbus",
+      "event_type": "request",
+      "function_code": "5"
+    },
+    "required_fields": [
+      "source_ip",
+      "destination_ip",
+      "function_code",
+      "reference_number",
+      "data"
+    ],
+    "false_positive_ips": ["192.168.1.10", "192.168.1.11"]
+  },
+  "OT-SENTINEL-MOD-002": {
+    "rule_id": "200003",
+    "rule_name": "OT Sentinel - Unauthorized Modbus Register Write",
+    "protocol": "modbus",
+    "attack_pattern": "unauthorized_register_write",
+    "mitre_attack_ics": "T0836",
+    "level": 12,
+    "severity": "high",
+    "expected_fields": {
+      "protocol": "modbus",
+      "event_type": "request",
+      "function_code": "6"
+    },
+    "required_fields": [
+      "source_ip",
+      "destination_ip",
+      "function_code",
+      "reference_number",
+      "data"
+    ],
+    "status": "planned"
+  }
+}

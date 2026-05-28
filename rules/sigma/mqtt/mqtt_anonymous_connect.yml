@@ -1,0 +1,43 @@
+title: OT Sentinel - Anonymous MQTT Connection
+id: 550e8400-e29b-41d4-a716-446655440030
+status: experimental
+description: |
+  Detects MQTT CONNECT packets with no username or password — anonymous
+  connections. Anonymous MQTT allows unauthenticated publish/subscribe
+  to all topics, enabling data harvest, false data injection, and
+  unauthorized control commands.
+
+references:
+  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://attack.mitre.org/techniques/ics/T0855/
+author: Subhash Bharadwaj
+date: 2026/05/28
+tags:
+  - attack.ics.t0855
+  - ot.mqtt
+  - detection.unauthorized_access
+logsource:
+  product: wazuh
+  category: ot_protocol
+detection:
+  selection:
+    protocol: mqtt
+    packet_type: CONNECT
+    username|null:
+      - ''
+      - 'null'
+      - 'None'
+    password_flag|in:
+      - 'false'
+      - '0'
+  condition: selection
+falsepositives:
+  - Public sensor data feeds intentionally open
+  - Test/development MQTT brokers without auth
+  - Legacy devices without credential support
+level: medium
+custom:
+  ot_sentinel_rule_id: OT-SENTINEL-MQTT-001
+  ot_sentinel_protocol: mqtt
+  ot_sentinel_attack_class: unauthorized_access
+  wazuh_rule_id: 200030

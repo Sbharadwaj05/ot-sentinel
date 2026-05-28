@@ -1,0 +1,57 @@
+<!--
+  Rule: OT-SENTINEL-DNP-001
+  Protocol: DNP3 (TCP/UDP, port 20000)
+  Attack Pattern: Unsolicited Response from Rogue Outstation
+  ATT&CK for ICS: T0856 - Spoof Reporting Message
+  Severity: High (12/15)
+  Tested: No (pending lab validation)
+  Author: Subhash Bharadwaj
+  Version: 1.0
+  Date: 2026-05-28
+
+  Description:
+  Detects DNP3 unsolicited response messages (application function code 0x82)
+  originating from an outstation data link address not present in the known
+  outstation CDB list. Unsolicited responses are normally sent by legitimate
+  outstations to report events without polling. A rogue outstation can inject
+  forged unsolicited responses to falsify telemetry — the operator sees fake
+  sensor readings, alarm states, or breaker positions.
+
+  This is the DNP3 equivalent of a Modbus "rogue master" — but at the
+  application layer. The attacker impersonates a legitimate field device.
+
+  Dependencies:
+  - Decoder: dnp3_decoder.xml (must be loaded first)
+  - CDB List: cdb-lists/known_dnp3_outstations
+  - Log source: dnp3_tap.py JSON output to Wazuh agent
+-->
+<rule id="200012" level="12">
+  <decoded_as>json</decoded_as>
+
+  <field name="protocol">dnp3</field>
+  <!-- FC 0x82 = Unsolicited Response (130 decimal) -->
+  <field name="function_code">^(130)$</field>
+  <field name="event_type">^response$</field>
+
+  <!-- Alert if the outstation address is not in the known list -->
+  <list
+        field="data_link_source"
+        lookup="not_match_key"
+    >etc/lists/known_dnp3_outstations</list>
+
+  <description>
+    OT Sentinel: Unsolicited DNP3 response from rogue outstation.
+    Outstation Address: $(data_link_source)
+    Source: $(source_ip):$(source_port) -> $(destination_ip):$(destination_port)
+    Function: $(function_code) ($(function_name))
+    IIN: $(internal_indications)
+    This device claims to be an outstation but its address is not in the known list.
+    Possible rogue device injecting false telemetry.
+  </description>
+
+  <mitre>
+    <id>T0856</id>
+  </mitre>
+
+  <group>ot-sentinel,dnp3,spoof_reporting,high_severity</group>
+</rule>
