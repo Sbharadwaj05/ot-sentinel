@@ -8,7 +8,7 @@ description: |
   unauthorized control commands.
 
 references:
-  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://github.com/Sbharadwaj05/ot-sentinel
   - https://attack.mitre.org/techniques/ics/T0855/
 author: Subhash Bharadwaj
 date: 2026/05/28

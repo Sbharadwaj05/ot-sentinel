@@ -8,7 +8,7 @@ description: |
   fake sensor readings, alarm states, or breaker positions.
 
 references:
-  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://github.com/Sbharadwaj05/ot-sentinel
   - https://attack.mitre.org/techniques/ics/T0856/
 author: Subhash Bharadwaj
 date: 2026/05/28

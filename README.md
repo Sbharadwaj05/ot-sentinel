@@ -1,8 +1,10 @@
 # OT Sentinel — Open-Source Detection Rules for ICS/OT Protocols
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-experimental-orange.svg)]()
-[![Phase](https://img.shields.io/badge/phase-0%20Foundation-lightgrey.svg)]()
+[![Rules](https://img.shields.io/badge/rules-29-blue)](rules/)
+[![ATT&CK](https://img.shields.io/badge/ATT&CK%20ICS-7%20techniques-orange)](mappings/)
+[![CI](https://img.shields.io/badge/CI-passing-brightgreen)]()
+[![Lab](https://img.shields.io/badge/lab-OpenPLC%2BGNS3-informational)]()
 
 **OT Sentinel** is an open-source detection rule library for Industrial Control Systems (ICS) and Operational Technology (OT) protocols. It provides ready-to-deploy **Wazuh** and **Sigma** rules backed by MITRE ATT&CK for ICS, tested against a real OpenPLC + GNS3 digital twin lab.
 
@@ -35,13 +37,15 @@ OT/ICS security teams face a critical gap:
 
 ## Protocol Coverage
 
-| Protocol | Standard Port | Phase | Status | Rules |
-|----------|--------------|-------|--------|-------|
-| **Modbus TCP** | 502 | Phase 1 | ✅ Complete | 8 / 8 |
-| **DNP3** | 20000 | Phase 2 | ✅ Complete | 7 / 7 |
-| **IEC 60870-5-104** | 2404 | Phase 3 | ✅ Complete | 6 / 6 |
-| **MQTT** | 1883 | Phase 4 | ✅ Complete | 5 / 5 |
-| **OPC-UA** | 4840 | Phase 4 | ✅ Complete | 3 / 3 |
+| Protocol | Port | Rules | Tests | Status |
+|----------|------|-------|-------|--------|
+| **Modbus TCP** | 502 | 8 Wazuh + 8 Sigma | ✅ Scripted | Complete |
+| **DNP3** | 20000 | 7 Wazuh + 7 Sigma | 💤 Stubs | Complete |
+| **IEC 60870-5-104** | 2404 | 6 Wazuh + 6 Sigma | 💤 Stubs | Complete |
+| **MQTT** | 1883 | 5 Wazuh + 5 Sigma | 💤 Stubs | Complete |
+| **OPC-UA** | 4840 | 3 Wazuh + 3 Sigma | 💤 Stubs | Complete |
+
+> 💤 **Stubs** = test directories exist, scripts pending. Contribute one via PR.
 
 ---
 
@@ -84,7 +88,7 @@ ot-sentinel/
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_HANDLE/ot-sentinel.git
+git clone https://github.com/Sbharadwaj05/ot-sentinel.git
 cd ot-sentinel
 
 # Copy Wazuh rules to manager
@@ -92,7 +96,7 @@ sudo cp rules/wazuh/decoders/*.xml /var/ossec/etc/decoders/
 sudo cp rules/wazuh/modbus/*.xml /var/ossec/etc/rules/
 
 # Copy CDB lists
-sudo cp cdb-lists/*.txt /var/ossec/etc/lists/
+sudo cp cdb-lists/* /var/ossec/etc/lists/
 
 # Restart Wazuh
 sudo systemctl restart wazuh-manager
@@ -134,7 +138,7 @@ Every rule maps to [MITRE ATT&CK for ICS](https://attack.mitre.org/matrices/ics/
 **Subhash Bharadwaj** — Security Engineer  
 - Production experience: Wazuh, SIEM/SOAR, Kubernetes (RKE2), Terraform, Ansible
 - OT/ICS: OpenPLC, GNS3, air-gapped digital twin environments
-- Prior work: [Wazuh NIST Rules Set](https://github.com/) — 50 rules, NIST CSF 2.0 + ATT&CK mapped
+- Prior work: [Wazuh NIST Rules Set](https://github.com/Sbharadwaj05/Wazuh-NIST-Rules-Set) — 50 rules, NIST CSF 2.0 + ATT&CK mapped
 
 ---
 

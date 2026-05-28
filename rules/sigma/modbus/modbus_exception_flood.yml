@@ -9,7 +9,7 @@ description: |
   active probing of invalid register addresses.
 
 references:
-  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://github.com/Sbharadwaj05/ot-sentinel
   - https://attack.mitre.org/techniques/ics/T0846/
   - https://modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf
 author: Subhash Bharadwaj

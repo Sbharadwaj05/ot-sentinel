@@ -91,7 +91,7 @@ id: [UUID or rule-id]          # Use valid UUID or ot-sentinel-xxx-nnn
 status: experimental            # Change to "tested" after lab validation
 description: [Detailed description]
 references:
-  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://github.com/Sbharadwaj05/ot-sentinel
   - https://attack.mitre.org/techniques/ics/[TXXXX]/
 author: [Your Name]
 date: [YYYY/MM/DD]
@@ -198,4 +198,4 @@ Open an issue with the `question` tag. Join the discussion on:
 
 ---
 
-*Maintained by [Subhash Bharadwaj](https://github.com/YOUR_HANDLE)*
+*Maintained by [Subhash Bharadwaj](https://github.com/Sbharadwaj05)*

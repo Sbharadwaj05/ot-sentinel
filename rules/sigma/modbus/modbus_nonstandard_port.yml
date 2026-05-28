@@ -8,7 +8,7 @@ description: |
   Modbus TCP uses port 502 per IANA assignment.
 
 references:
-  - https://github.com/YOUR_HANDLE/ot-sentinel
+  - https://github.com/Sbharadwaj05/ot-sentinel
   - https://attack.mitre.org/techniques/ics/T0840/
   - https://modbus.org/docs/Modbus_Messaging_Implementation_Guide_V1_0b.pdf
 author: Subhash Bharadwaj
