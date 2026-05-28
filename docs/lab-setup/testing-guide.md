@@ -1,5 +1,31 @@
 # OT Sentinel — Lab Testing Guide
 
+## Quick Start
+
+```bash
+# Spin up OpenPLC VM, deploy rules to Wazuh, run all 8 tests:
+
+sudo cp rules/wazuh/decoders/modbus_decoder.xml /var/ossec/etc/decoders/
+sudo cp rules/wazuh/modbus/*.xml /var/ossec/etc/rules/
+sudo cp cdb-lists/authorized_modbus_masters /var/ossec/etc/lists/
+sudo cp cdb-lists/known_modbus_masters /var/ossec/etc/lists/
+sudo systemctl restart wazuh-manager
+
+cd tests/modbus/
+python test_unauthorized_write.py --target 192.168.56.10
+python test_unauthorized_register_write.py --target 192.168.56.10
+python test_rogue_master.py --target 192.168.56.10
+python test_illegal_function.py --target 192.168.56.10
+python test_mass_read.py --target 192.168.56.10 --count 60
+python test_rapid_polling.py --target 192.168.56.10 --count 250
+python test_exception_flood.py --target 192.168.56.10 --count 40
+python test_nonstandard_port.py --target 192.168.56.10 --port 1502
+
+grep "200001\|200002\|200003\|200004\|200006\|200008\|200010\|200011" /var/ossec/logs/alerts/alerts.json
+```
+
+---
+
 > **Goal**: Validate all rules against a real OpenPLC + GNS3 digital twin lab.
 > **Time**: ~4-6 hours for full Tier 1 + Tier 2
 > **Prerequisites**: 16GB RAM, VirtualBox/VMware, Ubuntu 22.04 ISO

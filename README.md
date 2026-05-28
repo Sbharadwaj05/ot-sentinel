@@ -8,6 +8,8 @@
 
 **OT Sentinel** is an open-source detection rule library for Industrial Control Systems (ICS) and Operational Technology (OT) protocols. It provides ready-to-deploy **Wazuh** and **Sigma** rules backed by MITRE ATT&CK for ICS, tested against a real OpenPLC + GNS3 digital twin lab.
 
+> New to OT security? Start with [Getting Started](docs/GETTING_STARTED.md).
+
 ---
 
 ## The Problem

@@ -180,12 +180,24 @@ CI will automatically validate XML syntax, Sigma YAML syntax, ATT&CK IDs, and na
 
 | Phase | Protocol | Status | Rules Target |
 |-------|----------|--------|-------------|
-| 0 | Foundation | ✅ In Progress | Repo setup, CI/CD, first decoder |
-| 1 | Modbus | 📋 Next | 8 rules |
-| 2 | DNP3 | 📋 Planned | 8 rules |
-| 3 | IEC 104 | 📋 Planned | 8 rules |
-| 4 | MQTT + OPC-UA | 📋 Planned | 10 rules |
-| 5 | Polish & Launch | 📋 Planned | Docs, community, release |
+| 0-5 | All | ✅ Complete | 29 rules shipped |
+
+---
+
+## Good First Issues
+
+New to OT security? Start here:
+
+| Task | Difficulty | Time | What You'll Learn |
+|------|-----------|------|-------------------|
+| Write a test script for DNP3 rule | 🟢 Easy | 1-2 hr | DNP3 protocol basics, pymodbus-like libraries |
+| Write a test script for MQTT rule | 🟢 Easy | 1 hr | MQTT protocol, paho-mqtt library |
+| Improve an attack catalog with Wireshark screenshots | 🟢 Easy | 2 hr | OT protocol analysis, Wireshark filtering |
+| Add a new protocol primer (EtherNet/IP, BACnet) | 🟡 Medium | 4-6 hr | New protocol research, technical writing |
+| Write a new detection rule for an uncovered ATT&CK technique | 🟡 Medium | 3-4 hr | Rule writing, MITRE ATT&CK ICS mapping |
+| Build a new protocol tap (pcap → JSON converter) | 🔴 Hard | 6-8 hr | Packet parsing, scapy, Wazuh log formats |
+
+> Pick any open issue labeled `good first issue` or propose your own.
 
 ---
 
