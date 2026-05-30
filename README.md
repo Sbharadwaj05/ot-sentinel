@@ -87,9 +87,9 @@ OT/ICS security teams face a critical gap:
 
 ## Screenshots
 
-| OpenPLC Dashboard | Wazuh Alert (logtest) | Attack Test |
-|-------------------|----------------------|-------------|
-| ![OpenPLC](docs/lab-setup/openplc-dashboard.png) | ![Alert](docs/lab-setup/wazuh-alert-logtest.png) | ![Test](docs/lab-setup/modbus-test-running.png) |
+| Wazuh Alert (logtest) | Attack Test |
+|-----------------------|-------------|
+| ![Alert](docs/lab-setup/wazuh-alert-logtest.png) | ![Test](docs/lab-setup/modbus-test-running.png) |
 
 ---
 
