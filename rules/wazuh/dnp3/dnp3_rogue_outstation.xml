@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,spoof_reporting,high_severity">
 <!--
   Rule: OT-SENTINEL-DNP-001
   Protocol: DNP3 (TCP/UDP, port 20000)
@@ -28,10 +29,10 @@
 <rule id="200012" level="12">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
+  
   <!-- FC 0x82 = Unsolicited Response (130 decimal) -->
-  <field name="function_code">^(130)$</field>
-  <field name="event_type">^response$</field>
+  <field name="function_code" type="pcre2">^(130)$</field>
+  <field name="event_type" type="pcre2">^response$</field>
 
   <!-- Alert if the outstation address is not in the known list -->
   <list
@@ -51,7 +52,5 @@
 
   <mitre>
     <id>T0856</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,spoof_reporting,high_severity</group>
-</rule>
+  </mitre></rule>
+</group>

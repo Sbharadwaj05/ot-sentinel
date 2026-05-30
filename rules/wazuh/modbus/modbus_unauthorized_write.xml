@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,unauthorized_command,high_severity">
 <!--
   Rule: OT-SENTINEL-MOD-001
   Protocol: Modbus TCP
@@ -35,13 +36,13 @@
   <decoded_as>json</decoded_as>
 
   <!-- Match Modbus protocol -->
-  <field name="protocol">modbus</field>
+  
 
   <!-- Match write commands: FC05 (Write Single Coil) or FC15 (Write Multiple Coils) -->
-  <field name="function_code">^(5|15)$</field>
+  <field name="function_code" type="pcre2">^(5|15)$</field>
 
   <!-- Ensure this is a request, not a response -->
-  <field name="event_type">^request$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Allowlist check: alert if source_ip is NOT in the authorized masters CDB list
        File: /var/ossec/etc/lists/authorized_modbus_masters (no extension) -->
@@ -66,6 +67,5 @@
     <id>T0855</id>
   </mitre>
 
-  <!-- Group tags for filtering and dashboarding -->
-  <group>ot-sentinel,modbus,unauthorized_command,high_severity</group>
-</rule>
+  <!-- Group tags for filtering and dashboarding --></rule>
+</group>

@@ -1,3 +1,4 @@
+<group name="ot-sentinel,mqtt,denial_of_service,tracker">
 <!--
   Rule: OT-SENTINEL-MQTT-004a (Parent)
   Protocol: MQTT
@@ -16,15 +17,13 @@
   - Decoder: mqtt_decoder.xml
   - Child rule: 200034 (OT-SENTINEL-MQTT-004b)
 -->
-<rule id="200033" level="0">
+<rule id="200033" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">mqtt</field>
-  <field name="packet_type">^PUBLISH$</field>
+  
+  <field name="packet_type" type="pcre2">^PUBLISH$</field>
 
-  <description>OT Sentinel: MQTT publish (tracking only)</description>
-  <group>ot-sentinel,mqtt,denial_of_service,tracker</group>
-</rule>
+  <description>OT Sentinel: MQTT publish (tracking only)</description></rule>
 
 
 <!--
@@ -61,8 +60,8 @@
 <rule id="200034" level="8">
   <if_matched_sid>200033</if_matched_sid>
 
-  <frequency count="500" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="500" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: MQTT publish flood detected — possible DoS or sensor spoofing.
@@ -72,7 +71,5 @@
 
   <mitre>
     <id>T0814</id>
-  </mitre>
-
-  <group>ot-sentinel,mqtt,denial_of_service,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

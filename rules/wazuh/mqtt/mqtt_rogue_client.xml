@@ -1,3 +1,4 @@
+<group name="ot-sentinel,mqtt,network_intrusion,medium_severity">
 <!--
   Rule: OT-SENTINEL-MQTT-005
   Protocol: MQTT (TCP 1883 / TLS 8883)
@@ -31,8 +32,8 @@
 <rule id="200035" level="7">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">mqtt</field>
-  <field name="packet_type">^CONNECT$</field>
+  
+  <field name="packet_type" type="pcre2">^CONNECT$</field>
 
   <list field="client_id" lookup="not_match_key">etc/lists/known_mqtt_clients</list>
 
@@ -45,7 +46,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,mqtt,network_intrusion,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

@@ -1,3 +1,4 @@
+<group name="ot-sentinel,mqtt,reconnaissance,medium_severity">
 <!--
   Rule: OT-SENTINEL-MQTT-002
   Protocol: MQTT (TCP 1883 / TLS 8883)
@@ -26,11 +27,11 @@
 <rule id="200031" level="9">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">mqtt</field>
-  <field name="packet_type">^SUBSCRIBE$</field>
+  
+  <field name="packet_type" type="pcre2">^SUBSCRIBE$</field>
 
   <!-- Topic contains # (multi-level wildcard) -->
-  <field name="topic">#</field>
+  <field name="topic" type="pcre2">#</field>
 
   <description>
     OT Sentinel: MQTT wildcard subscription detected.
@@ -42,7 +43,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,mqtt,reconnaissance,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

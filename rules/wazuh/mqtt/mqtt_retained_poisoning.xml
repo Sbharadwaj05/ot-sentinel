@@ -1,3 +1,4 @@
+<group name="ot-sentinel,mqtt,data_integrity,high_severity">
 <!--
   Rule: OT-SENTINEL-MQTT-003
   Protocol: MQTT (TCP 1883 / TLS 8883)
@@ -39,12 +40,12 @@
 <rule id="200032" level="11">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">mqtt</field>
-  <field name="packet_type">^PUBLISH$</field>
-  <field name="retain">^true$|^1$</field>
+  
+  <field name="packet_type" type="pcre2">^PUBLISH$</field>
+  <field name="retain" type="pcre2">^true$|^1$</field>
 
   <!-- Match sensitive topic patterns — customize for your environment -->
-  <field name="topic">^(control/|alarm/critical|setpoint/|cmd/|command/)</field>
+  <field name="topic" type="pcre2">^(control/|alarm/critical|setpoint/|cmd/|command/)</field>
 
   <description>
     OT Sentinel: Retained MQTT message on sensitive topic — possible poisoning.
@@ -56,7 +57,5 @@
 
   <mitre>
     <id>T0856</id>
-  </mitre>
-
-  <group>ot-sentinel,mqtt,data_integrity,high_severity</group>
-</rule>
+  </mitre></rule>
+</group>

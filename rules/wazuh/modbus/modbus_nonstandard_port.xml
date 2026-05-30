@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,evasion,low_severity">
 <!--
   Rule: OT-SENTINEL-MOD-008
   Protocol: Modbus TCP
@@ -29,11 +30,11 @@
 <rule id="200011" level="4">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Alert when destination port is NOT 502 -->
-  <field name="destination_port" negate="yes">^502$</field>
+  <field name="destination_port" type="pcre2" negate="yes">^502$</field>
 
   <description>
     OT Sentinel: Modbus traffic detected on non-standard port.
@@ -45,7 +46,5 @@
 
   <mitre>
     <id>T0840</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,evasion,low_severity</group>
-</rule>
+  </mitre></rule>
+</group>

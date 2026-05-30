@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,reconnaissance,tracker">
 <!--
   Rule: OT-SENTINEL-MOD-005a (Parent)
   Protocol: Modbus TCP
@@ -16,16 +17,14 @@
   - Decoder: modbus_decoder.xml (must be loaded first)
   - Child rule: 200006 (OT-SENTINEL-MOD-005b)
 -->
-<rule id="200005" level="0">
+<rule id="200005" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="function_code">^(3|4)$</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="function_code" type="pcre2">^(3|4)$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
-  <description>OT Sentinel: Modbus register read (tracking only)</description>
-  <group>ot-sentinel,modbus,reconnaissance,tracker</group>
-</rule>
+  <description>OT Sentinel: Modbus register read (tracking only)</description></rule>
 
 
 <!--
@@ -59,8 +58,8 @@
   <if_matched_sid>200005</if_matched_sid>
 
   <!-- Alert when 50+ FC03/FC04 requests from same source in 5 minutes -->
-  <frequency count="50" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="50" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: Mass Modbus register read detected — possible reconnaissance.
@@ -71,7 +70,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,reconnaissance,low_severity</group>
-</rule>
+  </mitre></rule>
+</group>

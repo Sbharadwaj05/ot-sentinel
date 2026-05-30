@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,authentication,tracker">
 <!--
   Rule: OT-SENTINEL-DNP-004a (Parent)
   Protocol: DNP3
@@ -17,16 +18,14 @@
   - Decoder: dnp3_decoder.xml
   - Child rule: 200016 (OT-SENTINEL-DNP-004b)
 -->
-<rule id="200015" level="0">
+<rule id="200015" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
+  
   <!-- FC 0x20 = Authenticate, FC 0x83 = Authenticate Response (0x03 + 0x80) -->
-  <field name="function_code">^(32|131)$</field>
+  <field name="function_code" type="pcre2">^(32|131)$</field>
 
-  <description>OT Sentinel: DNP3 authentication message (tracking only)</description>
-  <group>ot-sentinel,dnp3,authentication,tracker</group>
-</rule>
+  <description>OT Sentinel: DNP3 authentication message (tracking only)</description></rule>
 
 
 <!--
@@ -61,8 +60,8 @@
 <rule id="200016" level="9">
   <if_matched_sid>200015</if_matched_sid>
 
-  <frequency count="10" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="10" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: DNP3 authentication message spike detected.
@@ -73,7 +72,5 @@
 
   <mitre>
     <id>T0858</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,authentication,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

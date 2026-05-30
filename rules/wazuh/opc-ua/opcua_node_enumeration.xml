@@ -1,3 +1,4 @@
+<group name="ot-sentinel,opcua,reconnaissance,tracker">
 <!--
   Rule: OT-SENTINEL-OPC-002a (Parent)
   Protocol: OPC-UA
@@ -17,15 +18,13 @@
   - Decoder: opcua_decoder.xml
   - Child rule: 200038 (OT-SENTINEL-OPC-002b)
 -->
-<rule id="200037" level="0">
+<rule id="200037" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">opcua</field>
-  <field name="service_type">^Browse$</field>
+  
+  <field name="service_type" type="pcre2">^Browse$</field>
 
-  <description>OT Sentinel: OPC-UA Browse request (tracking only)</description>
-  <group>ot-sentinel,opcua,reconnaissance,tracker</group>
-</rule>
+  <description>OT Sentinel: OPC-UA Browse request (tracking only)</description></rule>
 
 
 <!--
@@ -61,8 +60,8 @@
 <rule id="200038" level="7">
   <if_matched_sid>200037</if_matched_sid>
 
-  <frequency count="100" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="100" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: OPC-UA node enumeration detected — possible reconnaissance.
@@ -73,7 +72,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,opcua,reconnaissance,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,replay_attack,tracker">
 <!--
   Rule: OT-SENTINEL-DNP-005a (Parent)
   Protocol: DNP3
@@ -25,17 +26,15 @@
   Wazuh rules alone cannot provide. A future enhancement could use the
   Wazuh integration framework for stateful tracking.
 -->
-<rule id="200017" level="0">
+<rule id="200017" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
   <!-- Sequence numbers 0, 1, 2 — unusually low for established sessions -->
-  <field name="sequence_number">^(0|1|2)$</field>
+  <field name="sequence_number" type="pcre2">^(0|1|2)$</field>
 
-  <description>OT Sentinel: DNP3 low sequence number (tracking only)</description>
-  <group>ot-sentinel,dnp3,replay_attack,tracker</group>
-</rule>
+  <description>OT Sentinel: DNP3 low sequence number (tracking only)</description></rule>
 
 
 <!--
@@ -74,8 +73,8 @@
 <rule id="200018" level="8">
   <if_matched_sid>200017</if_matched_sid>
 
-  <frequency count="3" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="3" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: Repeated low DNP3 sequence numbers — possible replay attack.
@@ -86,7 +85,5 @@
 
   <mitre>
     <id>T0856</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,replay_attack,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

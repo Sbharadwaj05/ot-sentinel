@@ -1,3 +1,4 @@
+<group name="ot-sentinel,iec104,denial_of_service,tracker">
 <!--
   Rule: OT-SENTINEL-IEC-005a (Parent)
   Protocol: IEC 60870-5-104
@@ -17,16 +18,14 @@
   - Decoder: iec104_decoder.xml
   - Child rule: 200028 (OT-SENTINEL-IEC-005b)
 -->
-<rule id="200027" level="0">
+<rule id="200027" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">iec104</field>
+  
   <!-- Match both TESTFR activation and confirmation -->
-  <field name="control_function">^TESTFR_(act|con)$</field>
+  <field name="control_function" type="pcre2">^TESTFR_(act|con)$</field>
 
-  <description>OT Sentinel: IEC 104 TESTFR frame (tracking only)</description>
-  <group>ot-sentinel,iec104,denial_of_service,tracker</group>
-</rule>
+  <description>OT Sentinel: IEC 104 TESTFR frame (tracking only)</description></rule>
 
 
 <!--
@@ -60,8 +59,8 @@
 <rule id="200028" level="8">
   <if_matched_sid>200027</if_matched_sid>
 
-  <frequency count="200" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="200" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: IEC 104 TESTFR flooding detected — possible DoS.
@@ -72,7 +71,5 @@
 
   <mitre>
     <id>T0814</id>
-  </mitre>
-
-  <group>ot-sentinel,iec104,denial_of_service,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

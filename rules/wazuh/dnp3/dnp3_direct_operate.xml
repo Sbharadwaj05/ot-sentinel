@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,unauthorized_command,critical_severity">
 <!--
   Rule: OT-SENTINEL-DNP-002
   Protocol: DNP3 (TCP/UDP, port 20000)
@@ -33,10 +34,10 @@
 <rule id="200013" level="13">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
+  
   <!-- FC 0x05 = Direct Operate, FC 0x06 = Direct Operate No Ack -->
-  <field name="function_code">^(5|6)$</field>
-  <field name="event_type">^request$</field>
+  <field name="function_code" type="pcre2">^(5|6)$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
   <list field="source_ip" lookup="not_match_key">etc/lists/authorized_dnp3_masters</list>
 
@@ -52,7 +53,5 @@
 
   <mitre>
     <id>T0855</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,unauthorized_command,critical_severity</group>
-</rule>
+  </mitre></rule>
+</group>

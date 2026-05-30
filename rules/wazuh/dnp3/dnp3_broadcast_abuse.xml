@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,unauthorized_command,medium_severity">
 <!--
   Rule: OT-SENTINEL-DNP-003
   Protocol: DNP3 (TCP/UDP, port 20000)
@@ -30,11 +31,11 @@
 <rule id="200014" level="10">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Broadcast addresses: 65520-65535 (0xFFF0-0xFFFF) -->
-  <field name="data_link_destination">^655(2[0-9]|3[0-5])$</field>
+  <field name="data_link_destination" type="pcre2">^655(2[0-9]|3[0-5])$</field>
 
   <description>
     OT Sentinel: DNP3 broadcast command detected.
@@ -46,7 +47,5 @@
 
   <mitre>
     <id>T0855</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,unauthorized_command,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

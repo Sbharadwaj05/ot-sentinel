@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,unauthorized_command,high_severity">
 <!--
   Rule: OT-SENTINEL-MOD-002
   Protocol: Modbus TCP
@@ -27,9 +28,9 @@
 <rule id="200002" level="12">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="function_code">^(6|16)$</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="function_code" type="pcre2">^(6|16)$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
   <list field="source_ip" lookup="not_match_key">etc/lists/authorized_modbus_masters</list>
 
@@ -45,7 +46,5 @@
 
   <mitre>
     <id>T0836</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,unauthorized_command,high_severity</group>
-</rule>
+  </mitre></rule>
+</group>

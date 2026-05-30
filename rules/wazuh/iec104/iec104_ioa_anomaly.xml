@@ -1,3 +1,4 @@
+<group name="ot-sentinel,iec104,data_integrity,medium_severity">
 <!--
   Rule: OT-SENTINEL-IEC-006
   Protocol: IEC 60870-5-104 (TCP 2404)
@@ -34,8 +35,8 @@
 <rule id="200029" level="8">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">iec104</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Alert if IOA is not in the known list -->
   <list field="ioa" lookup="not_match_key">etc/lists/known_iec104_ioas</list>
@@ -51,7 +52,5 @@
 
   <mitre>
     <id>T0836</id>
-  </mitre>
-
-  <group>ot-sentinel,iec104,data_integrity,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

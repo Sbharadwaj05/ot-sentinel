@@ -1,3 +1,4 @@
+<group name="ot-sentinel,mqtt,unauthorized_access,medium_severity">
 <!--
   Rule: OT-SENTINEL-MQTT-001
   Protocol: MQTT (TCP 1883 / TLS 8883)
@@ -26,12 +27,12 @@
 <rule id="200030" level="8">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">mqtt</field>
-  <field name="packet_type">^CONNECT$</field>
+  
+  <field name="packet_type" type="pcre2">^CONNECT$</field>
 
   <!-- Username is null/empty AND no password flag -->
-  <field name="username">^$|^null$|^None$</field>
-  <field name="password_flag">^false$|^0$</field>
+  <field name="username" type="pcre2">^$|^null$|^None$</field>
+  <field name="password_flag" type="pcre2">^false$|^0$</field>
 
   <description>
     OT Sentinel: Anonymous MQTT connection detected.
@@ -43,7 +44,5 @@
 
   <mitre>
     <id>T0855</id>
-  </mitre>
-
-  <group>ot-sentinel,mqtt,unauthorized_access,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,network_discovery,low_severity">
 <!--
   Rule: OT-SENTINEL-DNP-006
   Protocol: DNP3 (TCP/UDP, port 20000)
@@ -34,8 +35,8 @@
 <rule id="200019" level="5">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Check both source and destination addresses against known list -->
   <list field="data_link_source" lookup="not_match_key">etc/lists/known_dnp3_addresses</list>
@@ -51,7 +52,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,network_discovery,low_severity</group>
-</rule>
+  </mitre></rule>
+</group>

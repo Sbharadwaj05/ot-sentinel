@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,protocol_fuzzing,medium_severity">
 <!--
   Rule: OT-SENTINEL-MOD-004
   Protocol: Modbus TCP
@@ -26,12 +27,12 @@
 <rule id="200004" level="8">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Valid function codes: 1-8, 11, 15-17, 20-24, 43 -->
   <!-- Alert on anything outside this set -->
-  <field name="function_code" negate="yes">^(1|2|3|4|5|6|7|8|11|15|16|17|20|21|22|23|24|43)$</field>
+  <field name="function_code" type="pcre2" negate="yes">^(1|2|3|4|5|6|7|8|11|15|16|17|20|21|22|23|24|43)$</field>
 
   <description>
     OT Sentinel: Illegal Modbus function code detected.
@@ -43,7 +44,5 @@
 
   <mitre>
     <id>T0855</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,protocol_fuzzing,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

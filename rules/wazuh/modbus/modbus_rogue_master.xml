@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,network_intrusion,medium_severity">
 <!--
   Rule: OT-SENTINEL-MOD-003
   Protocol: Modbus TCP
@@ -30,8 +31,8 @@
 <rule id="200003" level="10">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Alert if this Modbus master IP has never been seen before -->
   <list field="source_ip" lookup="not_match_key">etc/lists/known_modbus_masters</list>
@@ -47,7 +48,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,network_intrusion,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

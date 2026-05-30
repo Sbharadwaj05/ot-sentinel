@@ -1,3 +1,4 @@
+<group name="ot-sentinel,modbus,protocol_fuzzing,tracker">
 <!--
   Rule: OT-SENTINEL-MOD-007a (Parent)
   Protocol: Modbus TCP
@@ -23,18 +24,16 @@
   Note: We match function_code >= 128 (0x80) which is the standard Modbus
   exception response convention. Valid responses are FC 1-127.
 -->
-<rule id="200009" level="0">
+<rule id="200009" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">modbus</field>
-  <field name="event_type">^response$</field>
+  
+  <field name="event_type" type="pcre2">^response$</field>
   <!-- FC 128-255 = exception responses (original FC + 0x80)
        Regex: 128-129 or 130-199 or 200-249 or 250-255 -->
-  <field name="function_code">^1(2[89]|[3-9][0-9])$|^2([0-4][0-9]|5[0-5])$</field>
+  <field name="function_code" type="pcre2">^1(2[89]|[3-9][0-9])$|^2([0-4][0-9]|5[0-5])$</field>
 
-  <description>OT Sentinel: Modbus exception response (tracking only)</description>
-  <group>ot-sentinel,modbus,protocol_fuzzing,tracker</group>
-</rule>
+  <description>OT Sentinel: Modbus exception response (tracking only)</description></rule>
 
 
 <!--
@@ -67,8 +66,8 @@
   <if_matched_sid>200009</if_matched_sid>
 
   <!-- Alert when 30+ exception responses from same target in 5 minutes -->
-  <frequency count="30" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="30" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: Modbus exception response flood detected — possible scanning/fuzzing.
@@ -79,7 +78,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,modbus,protocol_fuzzing,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

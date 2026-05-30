@@ -1,3 +1,4 @@
+<group name="ot-sentinel,dnp3,reconnaissance,tracker">
 <!--
   Rule: OT-SENTINEL-DNP-007a (Parent)
   Protocol: DNP3
@@ -15,16 +16,14 @@
   - Decoder: dnp3_decoder.xml
   - Child rule: 200021 (OT-SENTINEL-DNP-007b)
 -->
-<rule id="200020" level="0">
+<rule id="200020" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">dnp3</field>
-  <field name="function_code">^(1)$</field>
-  <field name="event_type">^request$</field>
+  
+  <field name="function_code" type="pcre2">^(1)$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
-  <description>OT Sentinel: DNP3 read request (tracking only)</description>
-  <group>ot-sentinel,dnp3,reconnaissance,tracker</group>
-</rule>
+  <description>OT Sentinel: DNP3 read request (tracking only)</description></rule>
 
 
 <!--
@@ -61,8 +60,8 @@
 <rule id="200021" level="6">
   <if_matched_sid>200020</if_matched_sid>
 
-  <frequency count="100" timeframe="300">5</frequency>
-  <same_source_ip />
+   frequency="100" timeframe="300" ignore="5"
+  <same_srcip />
 
   <description>
     OT Sentinel: Mass DNP3 data read detected — possible reconnaissance.
@@ -73,7 +72,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,dnp3,reconnaissance,low_severity</group>
-</rule>
+  </mitre></rule>
+</group>

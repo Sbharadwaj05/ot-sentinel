@@ -1,3 +1,4 @@
+<group name="ot-sentinel,iec104,reconnaissance,tracker">
 <!--
   Rule: OT-SENTINEL-IEC-004a (Parent)
   Protocol: IEC 60870-5-104
@@ -17,17 +18,15 @@
   - Decoder: iec104_decoder.xml
   - Child rule: 200026 (OT-SENTINEL-IEC-004b)
 -->
-<rule id="200025" level="0">
+<rule id="200025" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">iec104</field>
+  
   <!-- ASDU type 100 = C_IC_NA (Interrogation Command) -->
-  <field name="asdu_type_id">^100$</field>
-  <field name="event_type">^request$</field>
+  <field name="asdu_type_id" type="pcre2">^100$</field>
+  <field name="event_type" type="pcre2">^request$</field>
 
-  <description>OT Sentinel: IEC 104 General Interrogation request (tracking only)</description>
-  <group>ot-sentinel,iec104,reconnaissance,tracker</group>
-</rule>
+  <description>OT Sentinel: IEC 104 General Interrogation request (tracking only)</description></rule>
 
 
 <!--
@@ -61,8 +60,8 @@
 <rule id="200026" level="7">
   <if_matched_sid>200025</if_matched_sid>
 
-  <frequency count="3" timeframe="600">10</frequency>
-  <same_source_ip />
+   frequency="3" timeframe="600" ignore="10"
+  <same_srcip />
 
   <description>
     OT Sentinel: IEC 104 General Interrogation abuse detected.
@@ -74,7 +73,5 @@
 
   <mitre>
     <id>T0846</id>
-  </mitre>
-
-  <group>ot-sentinel,iec104,reconnaissance,medium_severity</group>
-</rule>
+  </mitre></rule>
+</group>

@@ -1,3 +1,4 @@
+<group name="ot-sentinel,iec104,unauthorized_command,high_severity">
 <!--
   Rule: OT-SENTINEL-IEC-001
   Protocol: IEC 60870-5-104 (TCP 2404)
@@ -28,8 +29,8 @@
 <rule id="200022" level="12">
   <decoded_as>json</decoded_as>
 
-  <field name="protocol">iec104</field>
-  <field name="control_function">^STARTDT_act$</field>
+  
+  <field name="control_function" type="pcre2">^STARTDT_act$</field>
 
   <list field="source_ip" lookup="not_match_key">etc/lists/authorized_iec104_clients</list>
 
@@ -42,7 +43,5 @@
 
   <mitre>
     <id>T0855</id>
-  </mitre>
-
-  <group>ot-sentinel,iec104,unauthorized_command,high_severity</group>
-</rule>
+  </mitre></rule>
+</group>
