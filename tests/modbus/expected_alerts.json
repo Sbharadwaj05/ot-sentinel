@@ -45,5 +45,45 @@
       "data"
     ],
     "status": "planned"
+  },
+  "OT-SENTINEL-MOD-003": {
+    "rule_id": "200003",
+    "level": 10,
+    "severity": "medium",
+    "function_code": "1"
+  },
+  "OT-SENTINEL-MOD-004": {
+    "rule_id": "200004",
+    "level": 8,
+    "severity": "medium",
+    "function_code": "72"
+  },
+  "OT-SENTINEL-MOD-005": {
+    "rule_id": "200006",
+    "level": 6,
+    "severity": "low",
+    "function_code": "3",
+    "type": "frequency"
+  },
+  "OT-SENTINEL-MOD-006": {
+    "rule_id": "200008",
+    "level": 8,
+    "severity": "medium",
+    "function_code": "*",
+    "type": "frequency"
+  },
+  "OT-SENTINEL-MOD-007": {
+    "rule_id": "200010",
+    "level": 7,
+    "severity": "medium",
+    "function_code": "131",
+    "type": "frequency"
+  },
+  "OT-SENTINEL-MOD-008": {
+    "rule_id": "200011",
+    "level": 4,
+    "severity": "low",
+    "function_code": "3",
+    "destination_port": "non-502"
   }
 }

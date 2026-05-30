@@ -6,7 +6,7 @@
     "layer": "4.5"
   },
   "domain": "ics-attack",
-  "description": "OT Sentinel detection rule coverage mapped to MITRE ATT&CK for ICS. Green = tested rules, Orange = experimental rules. Generated: 2026-05-27. Rules loaded: 7 technique(s) covered.",
+  "description": "OT Sentinel detection rule coverage mapped to MITRE ATT&CK for ICS. Green = tested rules, Orange = experimental rules. Generated: 2026-05-30. Rules loaded: 7 technique(s) covered.",
   "filters": {
     "platforms": [
       "Field Controller/RTU/PLC/IED",

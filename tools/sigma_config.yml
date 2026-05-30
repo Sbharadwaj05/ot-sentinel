@@ -33,31 +33,14 @@ logsources:
   ot_protocol:
     product: ot_sentinel
     category: ot_protocol
-    conditions:
-      # Wazuh: logs land in the standard Wazuh index
-      wazuh:
-        index: wazuh-alerts-*
-      # Splunk: adjust index/sourcetype to match your deployment
-      splunk:
-        index: ot_sentinel
-        sourcetype: ot_protocol_json
-      # Elastic/ECS: adjust index pattern to match your deployment
-      elasticsearch:
-        index: ot-sentinel-*
-      # QRadar: adjust log source type
-      qradar:
-        log_source_type: OT_Sentinel_Protocol
+    transformations:
+      - field_name_mapping:
+          # OT Sentinel JSON fields are indexed as-is by Wazuh.
+          # Uncomment and adjust for your backend if you rename fields.
+          # source_ip: src_ip
+          # destination_ip: dst_ip
 
-# ── Field mappings ────────────────────────────────────────────────────────────
-# OT Sentinel JSON fields are stored as-is by Wazuh's JSON decoder.
-# For Splunk/Elastic, map Sigma field names to your actual indexed field names.
-# If you index raw JSON without renaming fields, no mapping is needed.
-#
-# Example: If your Splunk deployment renames `source_ip` → `src_ip`:
-#   fieldmappings:
-#     source_ip: src_ip
-#
-# For ECS-compliant pipelines:
+
 fieldmappings:
   # Core network fields
   source_ip: source.ip

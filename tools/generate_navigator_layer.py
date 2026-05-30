@@ -141,14 +141,12 @@ def extract_mitre_ids_from_rules(rules_dir: Path) -> dict[str, str]:
             try:
                 tree = ET.parse(xml_file)
                 root = tree.getroot()
-                # Fixed: use iter() for nested <mitre> inside <rule> inside <group>
+                # Iterate all <mitre> elements (supports multiple MITRE IDs per file)
                 mitre_elems = list(root.iter("mitre"))
-                mitre = mitre_elems[0] if mitre_elems else None
-                if mitre is not None:
+                for mitre in mitre_elems:
                     mitre_id = mitre.find("id")
                     if mitre_id is not None and mitre_id.text:
                         tid = mitre_id.text.strip()
-                        # Status from rule comment or attribute
                         status = "experimental"
                         coverage[tid] = status
             except Exception:

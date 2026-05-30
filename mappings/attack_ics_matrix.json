@@ -122,7 +122,8 @@
         },
         "T0858": {
           "name": "Spoof Reporting Message",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0873": {
           "name": "Connection Proxy",
@@ -139,7 +140,8 @@
       "techniques": {
         "T0840": {
           "name": "Network Connection Enumeration",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0842": {
           "name": "Network Sniffing",
@@ -147,7 +149,8 @@
         },
         "T0846": {
           "name": "Remote System Discovery",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0882": {
           "name": "Network Service Discovery",
@@ -214,7 +217,8 @@
         },
         "T0856": {
           "name": "Spoof Reporting Message",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0869": {
           "name": "Standard Application Layer Protocol",
@@ -284,7 +288,8 @@
         },
         "T0814": {
           "name": "Denial of Service",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0820": {
           "name": "Denial of View",
@@ -300,7 +305,8 @@
         },
         "T0836": {
           "name": "Modify Parameter",
-          "ot_sentinel_coverage": false
+          "ot_sentinel_coverage": true,
+          "status": "experimental"
         },
         "T0837": {
           "name": "Module Firmware",
@@ -369,7 +375,7 @@
   "summary": {
     "total_techniques": 76,
     "techniques_covered": 7,
-    "techniques_remaining": 75,
+    "techniques_remaining": 69,
     "coverage_percentage": 9.2,
     "phase_1_target": 8,
     "phase_2_target": 16,
