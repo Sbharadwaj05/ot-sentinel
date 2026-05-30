@@ -1,0 +1,1 @@
+{"protocol":"modbus","source_ip":"192.168.1.200","source_port":54321,"destination_ip":"192.168.1.100","destination_port":502,"transaction_id":99,"unit_id":1,"function_code":6,"function_name":"write_single_register","reference_number":100,"count":1,"data":"0x0BB8","event_type":"request","error":null}

@@ -1,0 +1,1 @@
+{"protocol":"dnp3","source_ip":"192.168.1.200","source_port":54321,"destination_ip":"192.168.1.100","destination_port":20000,"data_link_source":99,"data_link_destination":200,"function_code":130,"function_name":"unsolicited_response","event_type":"response"}

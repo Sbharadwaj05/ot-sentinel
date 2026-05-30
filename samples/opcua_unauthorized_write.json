@@ -1,0 +1,1 @@
+{"protocol":"opcua","source_ip":"192.168.1.200","source_port":54321,"destination_ip":"192.168.1.100","destination_port":4840,"service_type":"Write","session_id":"abc123def","auth_token":"tok456ghi","node_id":"ns=1;s=Temperature","security_policy":"Basic256Sha256","event_type":"request"}

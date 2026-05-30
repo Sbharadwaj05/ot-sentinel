@@ -1,5 +1,7 @@
 # OT Sentinel — Open-Source Detection Rules for ICS/OT Protocols
 
+> **⚠️ DON'T BREAK THE PLANT**: Community-driven project validated in an OpenPLC lab. Designed for **passive network monitoring**. DO NOT deploy to production OT assets without rigorous testing. Respect OT safety culture — validate everything in a non-production environment first.
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Rules](https://img.shields.io/badge/rules-29-blue)](rules/)
 [![ATT&CK](https://img.shields.io/badge/ATT&CK%20ICS-7%20techniques-orange)](mappings/)

@@ -1,0 +1,1 @@
+{"protocol":"mqtt","source_ip":"192.168.1.200","source_port":54321,"destination_ip":"192.168.1.100","destination_port":1883,"packet_type":"CONNECT","client_id":"rogue_device_01","username":null,"password_flag":false,"event_type":"request"}

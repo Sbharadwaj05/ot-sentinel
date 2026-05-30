@@ -1,0 +1,1 @@
+{"protocol":"iec104","source_ip":"192.168.1.200","source_port":54321,"destination_ip":"192.168.1.100","destination_port":2404,"apdu_type":"U","control_function":"STARTDT_act","event_type":"request"}
