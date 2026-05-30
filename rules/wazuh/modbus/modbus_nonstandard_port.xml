@@ -29,6 +29,7 @@
 -->
 <rule id="200011" level="4">
   <decoded_as>json</decoded_as>
+  <field name="function_name" type="pcre2">.*</field>
 
   
   <field name="event_type" type="pcre2">^request$</field>

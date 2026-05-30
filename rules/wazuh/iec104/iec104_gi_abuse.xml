@@ -20,6 +20,7 @@
 -->
 <rule id="200025" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="apdu_type" type="pcre2">.*</field>
 
   
   <!-- ASDU type 100 = C_IC_NA (Interrogation Command) -->

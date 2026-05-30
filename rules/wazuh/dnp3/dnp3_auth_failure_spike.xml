@@ -20,6 +20,7 @@
 -->
 <rule id="200015" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="data_link_destination" type="pcre2">\d+</field>
 
   
   <!-- FC 0x20 = Authenticate, FC 0x83 = Authenticate Response (0x03 + 0x80) -->

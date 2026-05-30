@@ -26,6 +26,7 @@
 -->
 <rule id="200009" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="function_name" type="pcre2">.*</field>
 
   
   <field name="event_type" type="pcre2">^response$</field>

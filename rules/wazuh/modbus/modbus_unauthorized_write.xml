@@ -34,6 +34,7 @@
 -->
 <rule id="200001" level="12">
   <decoded_as>json</decoded_as>
+  <field name="function_name" type="pcre2">.*</field>
 
   <!-- Match Modbus protocol -->
   

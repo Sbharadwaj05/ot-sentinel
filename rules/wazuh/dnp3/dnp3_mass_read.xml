@@ -18,6 +18,7 @@
 -->
 <rule id="200020" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="data_link_destination" type="pcre2">\d+</field>
 
   
   <field name="function_code" type="pcre2">^(1)$</field>

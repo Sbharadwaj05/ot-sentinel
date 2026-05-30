@@ -20,6 +20,7 @@
 -->
 <rule id="200027" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="apdu_type" type="pcre2">.*</field>
 
   
   <!-- Match both TESTFR activation and confirmation -->

@@ -28,6 +28,7 @@
 -->
 <rule id="200022" level="12">
   <decoded_as>json</decoded_as>
+  <field name="apdu_type" type="pcre2">.*</field>
 
   
   <field name="control_function" type="pcre2">^STARTDT_act$</field>

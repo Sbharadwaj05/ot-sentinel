@@ -28,6 +28,7 @@
 -->
 <rule id="200017" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="data_link_destination" type="pcre2">\d+</field>
 
   
   <field name="event_type" type="pcre2">^request$</field>

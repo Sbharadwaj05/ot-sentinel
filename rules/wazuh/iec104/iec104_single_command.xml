@@ -25,6 +25,7 @@
 -->
 <rule id="200023" level="13">
   <decoded_as>json</decoded_as>
+  <field name="apdu_type" type="pcre2">.*</field>
 
   
   <!-- ASDU type 45 = C_SC_NA (Single Command) -->

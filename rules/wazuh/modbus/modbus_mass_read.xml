@@ -19,6 +19,7 @@
 -->
 <rule id="200005" level="0"> noalert="1"
   <decoded_as>json</decoded_as>
+  <field name="function_name" type="pcre2">.*</field>
 
   
   <field name="function_code" type="pcre2">^(3|4)$</field>

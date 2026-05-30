@@ -34,6 +34,7 @@
 -->
 <rule id="200029" level="8">
   <decoded_as>json</decoded_as>
+  <field name="apdu_type" type="pcre2">.*</field>
 
   
   <field name="event_type" type="pcre2">^request$</field>
