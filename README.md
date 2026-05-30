@@ -46,15 +46,15 @@ OT/ICS security teams face a critical gap:
 
 ## Production Readiness
 
-| Protocol | Rules Written | Lab-Tested (OpenPLC) | Wazuh-Validated | Test Scripts |
-|----------|-------------|----------------------|-----------------|-------------|
-| **Modbus** | 8 | ✅ 8/8 | ✅ 4.14.5 | ✅ All 8 |
-| **DNP3** | 7 | — | ✅ 1/7 (logtest) | 💤 Stub READMEs |
-| **IEC 104** | 6 | — | ✅ 1/6 (logtest) | 💤 Stub READMEs |
-| **MQTT** | 5 | — | ✅ 1/5 (logtest) | 💤 Stub READMEs |
-| **OPC-UA** | 3 | — | ✅ 1/3 (logtest) | 💤 Stub READMEs |
+| Protocol | Rules Written | HW-Tested (OpenPLC) | Wazuh-Validated | Test Scripts |
+|----------|-------------|---------------------|-----------------|-------------|
+| **Modbus** | 8 | ✅ 8/8 | ✅ 8/8 | ✅ All 8 |
+| **DNP3** | 7 | — | ✅ 7/7 | 💤 Stubs |
+| **IEC 104** | 6 | — | ✅ 6/6 | 💤 Stubs |
+| **MQTT** | 5 | — | ✅ 5/5 | 💤 Stubs |
+| **OPC-UA** | 3 | — | ✅ 3/3 | 💤 Stubs |
 
-> 💤 **Stubs** = test directories exist with wazuh-logtest one-liners. Full pymodbus-style scripts planned for v1.1.
+> **Every rule validated via `wazuh-logtest` on Wazuh 4.14.5.** Hardware testing complete for Modbus. DNP3/IEC104/MQTT/OPC-UA rules are logtest-validated — seeking community help with hardware validation.
 >
 > **Before deploying to production**: test every rule against YOUR hardware, tune thresholds to YOUR traffic patterns, and populate all CDB allowlists with YOUR authorized devices.
 
@@ -199,4 +199,6 @@ OT Sentinel is an **independent community project**. It is not affiliated with o
 
 ---
 
-**Phase 0 ✅ | Phase 1 ✅ | Phase 2 ✅ | Phase 3 ✅ | Phase 4 ✅ | Next: Phase 5 — Polish & Launch**
+**Phase 0 ✅ | Phase 1 ✅ | Phase 2 ✅ | Phase 3 ✅ | Phase 4 ✅ | Phase 5 ✅**
+
+> **Note on the name**: OT Sentinel is an independent community project. It is not affiliated with Microsoft Sentinel (Azure SIEM/SOAR) or any commercial OT security vendor.
