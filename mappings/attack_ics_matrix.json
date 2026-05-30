@@ -45,9 +45,17 @@
           "name": "Unauthorized Command Message",
           "ot_sentinel_coverage": true,
           "ot_sentinel_rules": [
-            "OT-SENTINEL-MOD-001"
+            "OT-SENTINEL-MOD-001",
+            "OT-SENTINEL-MOD-004",
+            "OT-SENTINEL-DNP-002",
+            "OT-SENTINEL-DNP-003",
+            "OT-SENTINEL-IEC-001",
+            "OT-SENTINEL-IEC-002",
+            "OT-SENTINEL-IEC-003",
+            "OT-SENTINEL-MQTT-001",
+            "OT-SENTINEL-OPC-001"
           ],
-          "status": "experimental"
+          "status": "stable"
         },
         "T0869": {
           "name": "Standard Application Layer Protocol",
@@ -123,7 +131,10 @@
         "T0858": {
           "name": "Spoof Reporting Message",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-DNP-004"
+          ],
+          "status": "stable"
         },
         "T0873": {
           "name": "Connection Proxy",
@@ -141,7 +152,10 @@
         "T0840": {
           "name": "Network Connection Enumeration",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-MOD-008"
+          ],
+          "status": "stable"
         },
         "T0842": {
           "name": "Network Sniffing",
@@ -150,7 +164,18 @@
         "T0846": {
           "name": "Remote System Discovery",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-MOD-003",
+            "OT-SENTINEL-MOD-005",
+            "OT-SENTINEL-MOD-007",
+            "OT-SENTINEL-DNP-006",
+            "OT-SENTINEL-DNP-007",
+            "OT-SENTINEL-IEC-004",
+            "OT-SENTINEL-MQTT-002",
+            "OT-SENTINEL-MQTT-005",
+            "OT-SENTINEL-OPC-002"
+          ],
+          "status": "stable"
         },
         "T0882": {
           "name": "Network Service Discovery",
@@ -218,7 +243,12 @@
         "T0856": {
           "name": "Spoof Reporting Message",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-DNP-001",
+            "OT-SENTINEL-DNP-005",
+            "OT-SENTINEL-MQTT-003"
+          ],
+          "status": "stable"
         },
         "T0869": {
           "name": "Standard Application Layer Protocol",
@@ -289,7 +319,12 @@
         "T0814": {
           "name": "Denial of Service",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-MOD-006",
+            "OT-SENTINEL-IEC-005",
+            "OT-SENTINEL-MQTT-004"
+          ],
+          "status": "stable"
         },
         "T0820": {
           "name": "Denial of View",
@@ -306,7 +341,12 @@
         "T0836": {
           "name": "Modify Parameter",
           "ot_sentinel_coverage": true,
-          "status": "experimental"
+          "ot_sentinel_rules": [
+            "OT-SENTINEL-MOD-002",
+            "OT-SENTINEL-IEC-006",
+            "OT-SENTINEL-OPC-003"
+          ],
+          "status": "stable"
         },
         "T0837": {
           "name": "Module Firmware",
@@ -316,9 +356,17 @@
           "name": "Unauthorized Command Message",
           "ot_sentinel_coverage": true,
           "ot_sentinel_rules": [
-            "OT-SENTINEL-MOD-001"
+            "OT-SENTINEL-MOD-001",
+            "OT-SENTINEL-MOD-004",
+            "OT-SENTINEL-DNP-002",
+            "OT-SENTINEL-DNP-003",
+            "OT-SENTINEL-IEC-001",
+            "OT-SENTINEL-IEC-002",
+            "OT-SENTINEL-IEC-003",
+            "OT-SENTINEL-MQTT-001",
+            "OT-SENTINEL-OPC-001"
           ],
-          "status": "experimental"
+          "status": "stable"
         },
         "T0859": {
           "name": "Man in the Middle",
