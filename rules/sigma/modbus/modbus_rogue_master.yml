@@ -1,6 +1,6 @@
 title: OT Sentinel - Rogue Modbus Master Detection
 id: 550e8400-e29b-41d4-a716-446655440003
-status: experimental
+status: stable
 description: |
   Detects Modbus traffic from source IPs never previously observed on the
   OT network — a strong indicator of an unauthorized device connecting.

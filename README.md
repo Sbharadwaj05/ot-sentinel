@@ -41,13 +41,38 @@ OT/ICS security teams face a critical gap:
 
 | Protocol | Port | Rules | Tests | Status |
 |----------|------|-------|-------|--------|
-| **Modbus TCP** | 502 | 8 Wazuh + 8 Sigma | ✅ Scripted | Complete |
+| **Modbus TCP** | 502 | 8 Wazuh + 8 Sigma | ✅ Tested (OpenPLC + Wazuh 4.14) | Complete |
 | **DNP3** | 20000 | 7 Wazuh + 7 Sigma | 💤 Stubs | Complete |
 | **IEC 60870-5-104** | 2404 | 6 Wazuh + 6 Sigma | 💤 Stubs | Complete |
 | **MQTT** | 1883 | 5 Wazuh + 5 Sigma | 💤 Stubs | Complete |
 | **OPC-UA** | 4840 | 3 Wazuh + 3 Sigma | 💤 Stubs | Complete |
 
 > 💤 **Stubs** = test directories exist, scripts pending. Contribute one via PR.
+
+---
+
+## How OT Sentinel Compares
+
+### vs Commercial OT Security
+
+| Concern | Dragos / Nozomi / Claroty | OT Sentinel |
+|---------|--------------------------|-------------|
+| Logic visible? | ❌ Black box | ✅ Open-source |
+| Custom rules? | Limited UI | Full control (XML) |
+| Works with Wazuh? | ❌ Separate platform | ✅ Drop-in |
+| Auditable? | ❌ No | ✅ Apache 2.0 |
+| ATT&CK mapped? | Varies | ✅ Every rule |
+| Cost | $50K-200K+/year | Free |
+
+### vs Open-Source Tools
+
+| Tool | Purpose | OT Sentinel's Role |
+|------|---------|-------------------|
+| [Conpot](https://github.com/mushorg/conpot) | ICS honeypot | Alerts on real device attacks |
+| [GRASSMARLIN](https://github.com/nsacyber/GRASSMARLIN) | Passive mapping | Detection after discovery |
+| [QuickDraw](https://github.com/digitalbond/QuickDraw) | SNORT rules | SIEM-layer (Wazuh/Sigma) |
+
+---
 
 ---
 

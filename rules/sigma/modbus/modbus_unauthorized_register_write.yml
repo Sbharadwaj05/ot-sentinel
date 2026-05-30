@@ -1,6 +1,6 @@
 title: OT Sentinel - Unauthorized Modbus Register Write
 id: 550e8400-e29b-41d4-a716-446655440002
-status: experimental
+status: stable
 description: |
   Detects unauthorized Modbus holding register write commands (FC06/FC16)
   from source IPs not in the authorized masters list. Register writes can

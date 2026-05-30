@@ -1,6 +1,6 @@
 title: OT Sentinel - Modbus on Non-Standard Port
 id: 550e8400-e29b-41d4-a716-446655440008
-status: experimental
+status: stable
 description: |
   Detects Modbus TCP traffic on any port other than the standard port 502.
   This could indicate an attacker running Modbus on an alternate port to

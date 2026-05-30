@@ -1,6 +1,6 @@
 title: OT Sentinel - Rapid Modbus Polling (DoS)
 id: 550e8400-e29b-41d4-a716-446655440006
-status: experimental
+status: stable
 description: |
   Detects a Modbus master flooding a device with requests at a rate far
   exceeding normal polling intervals. This can degrade PLC performance,

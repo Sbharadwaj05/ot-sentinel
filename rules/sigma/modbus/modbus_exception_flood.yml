@@ -1,6 +1,6 @@
 title: OT Sentinel - Modbus Exception Response Flood
 id: 550e8400-e29b-41d4-a716-446655440007
-status: experimental
+status: stable
 description: |
   Detects a sustained flood of Modbus exception responses from a PLC —
   a strong indicator of an attacker scanning or fuzzing the device.

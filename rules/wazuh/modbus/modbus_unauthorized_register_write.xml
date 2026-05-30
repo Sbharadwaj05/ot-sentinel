@@ -5,7 +5,7 @@
   Attack Pattern: Unauthorized Register Write
   ATT&CK for ICS: T0836 - Modify Parameter
   Severity: High (12/15)
-  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Tested: Yes (OpenPLC + Wazuh 4.14.5, 2026-05-30)
   Author: Subhash Bharadwaj
   Version: 1.0
   Date: 2026-05-27

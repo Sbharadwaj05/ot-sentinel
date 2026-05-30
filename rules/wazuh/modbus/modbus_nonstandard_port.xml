@@ -5,7 +5,7 @@
   Attack Pattern: Modbus over Non-Standard Port
   ATT&CK for ICS: T0840 - Network Connection Enumeration
   Severity: Low (4/15)
-  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Tested: Yes (OpenPLC + Wazuh 4.14.5, 2026-05-30)
   Author: Subhash Bharadwaj
   Version: 1.0
   Date: 2026-05-27

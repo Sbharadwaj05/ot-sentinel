@@ -1,6 +1,6 @@
 title: OT Sentinel - Illegal Modbus Function Code
 id: 550e8400-e29b-41d4-a716-446655440004
-status: experimental
+status: stable
 description: |
   Detects Modbus requests containing function codes outside the valid range
   defined by the Modbus specification (valid: 1-8, 11, 15-17, 20-24, 43).

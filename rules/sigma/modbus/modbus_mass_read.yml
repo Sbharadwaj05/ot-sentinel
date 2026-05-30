@@ -1,6 +1,6 @@
 title: OT Sentinel - Mass Modbus Register Read (Reconnaissance)
 id: 550e8400-e29b-41d4-a716-446655440005
-status: experimental
+status: stable
 description: |
   Detects an unusually high volume of Modbus read commands (FC03/FC04)
   from a single source IP within a 5-minute window. This is the Modbus

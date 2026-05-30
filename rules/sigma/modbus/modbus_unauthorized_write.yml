@@ -1,6 +1,6 @@
 title: OT Sentinel - Unauthorized Modbus Coil Write
 id: 550e8400-e29b-41d4-a716-446655440001
-status: experimental
+status: stable
 description: |
   Detects unauthorized Modbus coil write commands from source IPs not in
   the authorized masters list. Coil writes (FC05/FC15) can directly control

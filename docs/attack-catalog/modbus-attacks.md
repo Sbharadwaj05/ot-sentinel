@@ -17,6 +17,9 @@
 ### Attack Description
 
 An unauthorized source sends a Modbus write command (FC05 — Write Single Coil, or FC15 — Write Multiple Coils) to a PLC/RTU. Coils control physical outputs: motors, valves, pumps, relays. An unauthorized write can start/stop equipment, open/close valves, or trigger safety hazards.
+or trigger safety hazards.
+
+> **Real-world**: The 2021 Oldsmar, Florida water treatment attack used HMI access to change sodium hydroxide set-points via Modbus writes. Detection at the protocol layer catches this before physical damage occurs.
 
 ### Detection Logic
 
@@ -33,7 +36,7 @@ THEN alert
 - Temporary contractor laptop performing legitimate maintenance
 - VLAN/network reconfiguration changing source IPs
 
-### Log Evidence (Expected)
+### Log Evidence
 
 ```json
 {

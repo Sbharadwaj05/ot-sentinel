@@ -33,7 +33,7 @@
   Attack Pattern: Mass Register Read (Reconnaissance)
   ATT&CK for ICS: T0846 - Remote System Discovery
   Severity: Low (6/15)
-  Tested: No (pending OpenPLC + GNS3 lab validation)
+  Tested: Yes (OpenPLC + Wazuh 4.14.5, 2026-05-30)
   Author: Subhash Bharadwaj
   Version: 1.0
   Date: 2026-05-27
