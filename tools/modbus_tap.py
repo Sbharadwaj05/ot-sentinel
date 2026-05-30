@@ -287,7 +287,7 @@ def run_demo(target: str, port: int = 502) -> None:
         file=sys.stderr,
     )
     print(
-        f"[modbus_tap] >>> This should trigger Wazuh rule 200003 (OT-SENTINEL-MOD-002)",
+        f"[modbus_tap] >>> This should trigger Wazuh rule 200002 (OT-SENTINEL-MOD-002)",
         file=sys.stderr,
     )
 

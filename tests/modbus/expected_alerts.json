@@ -19,10 +19,13 @@
       "reference_number",
       "data"
     ],
-    "false_positive_ips": ["192.168.1.10", "192.168.1.11"]
+    "false_positive_ips": [
+      "192.168.1.10",
+      "192.168.1.11"
+    ]
   },
   "OT-SENTINEL-MOD-002": {
-    "rule_id": "200003",
+    "rule_id": "200002",
     "rule_name": "OT Sentinel - Unauthorized Modbus Register Write",
     "protocol": "modbus",
     "attack_pattern": "unauthorized_register_write",

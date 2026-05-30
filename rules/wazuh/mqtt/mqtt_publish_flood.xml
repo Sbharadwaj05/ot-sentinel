@@ -57,10 +57,8 @@
   - Decoder: mqtt_decoder.xml
   - Parent rule: 200033 (OT-SENTINEL-MQTT-004a)
 -->
-<rule id="200034" level="8">
+<rule id="200034" level="8" frequency="500" timeframe="300" ignore="5">
   <if_matched_sid>200033</if_matched_sid>
-
-   frequency="500" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

@@ -71,10 +71,8 @@
   where legitimate sequence numbers naturally start from 0. Tune the
   frequency threshold based on your environment's reconnection patterns.
 -->
-<rule id="200018" level="8">
+<rule id="200018" level="8" frequency="3" timeframe="300" ignore="5">
   <if_matched_sid>200017</if_matched_sid>
-
-   frequency="3" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

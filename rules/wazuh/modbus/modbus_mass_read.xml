@@ -55,11 +55,10 @@
   - Decoder: modbus_decoder.xml (must be loaded first)
   - Parent rule: 200005 (OT-SENTINEL-MOD-005a)
 -->
-<rule id="200006" level="6">
+<rule id="200006" level="6" frequency="50" timeframe="300" ignore="5">
   <if_matched_sid>200005</if_matched_sid>
 
   <!-- Alert when 50+ FC03/FC04 requests from same source in 5 minutes -->
-   frequency="50" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

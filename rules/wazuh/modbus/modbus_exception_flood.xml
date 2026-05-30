@@ -63,11 +63,10 @@
   - Decoder: modbus_decoder.xml (must be loaded first)
   - Parent rule: 200009 (OT-SENTINEL-MOD-007a)
 -->
-<rule id="200010" level="7">
+<rule id="200010" level="7" frequency="30" timeframe="300" ignore="5">
   <if_matched_sid>200009</if_matched_sid>
 
   <!-- Alert when 30+ exception responses from same target in 5 minutes -->
-   frequency="30" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

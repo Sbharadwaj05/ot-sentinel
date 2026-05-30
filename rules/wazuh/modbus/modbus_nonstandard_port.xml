@@ -31,11 +31,15 @@
   <decoded_as>json</decoded_as>
   <field name="function_name" type="pcre2">.*</field>
 
-  
+
   <field name="event_type" type="pcre2">^request$</field>
 
   <!-- Alert when destination port is NOT 502 -->
   <field name="destination_port" type="pcre2" negate="yes">^502$</field>
+  <list
+            field="destination_port"
+            lookup="not_match_key"
+        >etc/lists/non_standard_modbus_ports</list>
 
   <description>
     OT Sentinel: Modbus traffic detected on non-standard port.

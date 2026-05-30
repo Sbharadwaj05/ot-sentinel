@@ -57,10 +57,8 @@
   - Decoder: opcua_decoder.xml
   - Parent rule: 200037 (OT-SENTINEL-OPC-002a)
 -->
-<rule id="200038" level="7">
+<rule id="200038" level="7" frequency="100" timeframe="300" ignore="5">
   <if_matched_sid>200037</if_matched_sid>
-
-   frequency="100" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

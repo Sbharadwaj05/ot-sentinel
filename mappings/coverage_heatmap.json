@@ -206,8 +206,8 @@
     {
       "techniqueID": "T0840",
       "tactic": "discovery",
-      "color": "#ff9800",
-      "comment": "Covered \u2014 experimental (pending lab test)",
+      "color": "#4caf50",
+      "comment": "Covered \u2014 rule tested in lab",
       "enabled": true
     },
     {

@@ -57,10 +57,8 @@
   - Decoder: iec104_decoder.xml
   - Parent rule: 200027 (OT-SENTINEL-IEC-005a)
 -->
-<rule id="200028" level="8">
+<rule id="200028" level="8" frequency="200" timeframe="300" ignore="5">
   <if_matched_sid>200027</if_matched_sid>
-
-   frequency="200" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

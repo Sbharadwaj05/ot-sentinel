@@ -31,7 +31,7 @@
   <field name="packet_type" type="pcre2">^CONNECT$</field>
 
   <!-- Username is null/empty AND no password flag -->
-  <field name="username" type="pcre2">^$|^null$|^None$</field>
+  <field name="username" type="pcre2" negate="yes">.+</field>
   <field name="password_flag" type="pcre2">^false$|^0$</field>
 
   <description>

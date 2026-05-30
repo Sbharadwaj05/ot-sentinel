@@ -58,10 +58,8 @@
   - Decoder: dnp3_decoder.xml
   - Parent rule: 200020 (OT-SENTINEL-DNP-007a)
 -->
-<rule id="200021" level="6">
+<rule id="200021" level="6" frequency="100" timeframe="300" ignore="5">
   <if_matched_sid>200020</if_matched_sid>
-
-   frequency="100" timeframe="300" ignore="5"
   <same_srcip />
 
   <description>

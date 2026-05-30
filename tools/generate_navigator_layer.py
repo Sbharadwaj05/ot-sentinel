@@ -140,7 +140,9 @@ def extract_mitre_ids_from_rules(rules_dir: Path) -> dict[str, str]:
             try:
                 tree = ET.parse(xml_file)
                 root = tree.getroot()
-                mitre = root.find("mitre")
+                # Fixed: use iter() for nested <mitre> inside <rule> inside <group>
+                mitre_elems = list(root.iter("mitre"))
+                mitre = mitre_elems[0] if mitre_elems else None
                 if mitre is not None:
                     mitre_id = mitre.find("id")
                     if mitre_id is not None and mitre_id.text:
