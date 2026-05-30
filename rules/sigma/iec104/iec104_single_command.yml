@@ -16,7 +16,7 @@ tags:
   - ot.iec104
   - detection.unauthorized_command
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

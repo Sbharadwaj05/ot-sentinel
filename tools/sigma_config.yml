@@ -1,0 +1,109 @@
+# OT Sentinel — pySigma / sigmac Logsource Pipeline Configuration
+# =================================================================
+# OT Sentinel rules use `product: ot_sentinel` with `category: ot_protocol`.
+# This is a CUSTOM logsource that must be mapped to your target SIEM via this
+# pipeline config before running sigmac/pySigma.
+#
+# Usage (pySigma ≥ 0.10 / sigma-cli):
+#   sigma convert -t splunk -p tools/sigma_config.yml rules/sigma/modbus/*.yml
+#   sigma convert -t elasticsearch -p tools/sigma_config.yml rules/sigma/
+#
+# Usage (legacy sigmac):
+#   sigmac -t splunk -c tools/sigma_config.yml rules/sigma/modbus/*.yml
+#
+# Background:
+#   All OT Sentinel logs are JSON objects emitted by *_tap.py scripts (e.g.
+#   modbus_tap.py). The JSON is ingested by Wazuh's JSON decoder and stored
+#   as fields. The field names in the Sigma detection blocks match those
+#   JSON fields exactly, so no field remapping is needed beyond the index/
+#   sourcetype/index_pattern settings below.
+#
+# Author: Subhash Bharadwaj
+# Version: 1.0
+# Date: 2026-05-28
+
+title: OT Sentinel Custom Logsource Pipeline
+
+name: ot_sentinel_pipeline
+
+# ── Logsource conditions ──────────────────────────────────────────────────────
+# Tell pySigma that rules with product=ot_sentinel / category=ot_protocol
+# target a specific index/sourcetype per backend.
+logsources:
+  ot_protocol:
+    product: ot_sentinel
+    category: ot_protocol
+    conditions:
+      # Wazuh: logs land in the standard Wazuh index
+      wazuh:
+        index: wazuh-alerts-*
+      # Splunk: adjust index/sourcetype to match your deployment
+      splunk:
+        index: ot_sentinel
+        sourcetype: ot_protocol_json
+      # Elastic/ECS: adjust index pattern to match your deployment
+      elasticsearch:
+        index: ot-sentinel-*
+      # QRadar: adjust log source type
+      qradar:
+        log_source_type: OT_Sentinel_Protocol
+
+# ── Field mappings ────────────────────────────────────────────────────────────
+# OT Sentinel JSON fields are stored as-is by Wazuh's JSON decoder.
+# For Splunk/Elastic, map Sigma field names to your actual indexed field names.
+# If you index raw JSON without renaming fields, no mapping is needed.
+#
+# Example: If your Splunk deployment renames `source_ip` → `src_ip`:
+#   fieldmappings:
+#     source_ip: src_ip
+#
+# For ECS-compliant pipelines:
+fieldmappings:
+  # Core network fields
+  source_ip: source.ip
+  source_port: source.port
+  destination_ip: destination.ip
+  destination_port: destination.port
+  # OT protocol fields (no renaming needed — kept as-is)
+  protocol: protocol
+  function_code: function_code
+  function_name: function_name
+  event_type: event_type
+  # Modbus-specific
+  unit_id: unit_id
+  reference_number: reference_number
+  transaction_id: transaction_id
+  # DNP3-specific
+  data_link_source: data_link_source
+  data_link_destination: data_link_destination
+  sequence_number: sequence_number
+  # IEC 104-specific
+  apdu_type: apdu_type
+  control_function: control_function
+  asdu_type_id: asdu_type_id
+  cot: cot
+  ioa: ioa
+  # MQTT-specific
+  packet_type: packet_type
+  client_id: client_id
+  username: username
+  password_flag: password_flag
+  topic: topic
+  retain: retain
+  # OPC-UA-specific
+  service_type: service_type
+  session_id: session_id
+  auth_token: auth_token
+  node_id: node_id
+  security_policy: security_policy
+
+# ── Notes for Splunk users ────────────────────────────────────────────────────
+# The Sigma `| count(source_ip) > N` aggregate conditions (used in mass_read,
+# rapid_polling, exception_flood rules) translate to Splunk `stats` commands.
+# Ensure your Splunk search head has adequate resources for streaming stats
+# over OT protocol events.
+#
+# ── Notes for Wazuh users ────────────────────────────────────────────────────
+# You do not need this config to use the Sigma rules WITH Wazuh. The Wazuh XML
+# rules in rules/wazuh/ are the native Wazuh implementation. Use the Sigma
+# rules only when converting to a non-Wazuh SIEM target.

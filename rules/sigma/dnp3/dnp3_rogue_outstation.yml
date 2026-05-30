@@ -17,7 +17,7 @@ tags:
   - ot.dnp3
   - detection.spoof_reporting
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

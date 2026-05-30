@@ -17,7 +17,7 @@ tags:
   - ot.mqtt
   - detection.data_integrity
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

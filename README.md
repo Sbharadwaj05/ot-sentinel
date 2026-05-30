@@ -109,7 +109,8 @@ ot-sentinel/
 │       ├── modbus/
 │       ├── dnp3/
 │       ├── iec104/
-│       └── mqtt/
+│       ├── mqtt/
+│       └── opc-ua/
 ├── cdb-lists/           # Wazuh CDB allowlists
 ├── tests/               # Test scripts (pymodbus, paho-mqtt, etc.)
 ├── docs/                # Protocol primers, attack catalogs, lab guides

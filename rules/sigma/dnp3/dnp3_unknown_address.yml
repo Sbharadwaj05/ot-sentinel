@@ -16,7 +16,7 @@ tags:
   - ot.dnp3
   - detection.network_discovery
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

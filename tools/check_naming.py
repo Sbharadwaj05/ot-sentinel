@@ -28,7 +28,7 @@ PROTOCOL_PREFIXES = {
     "modbus": "MOD",
     "dnp3": "DNP",
     "iec104": "IEC",
-    "mqtt": "MQT",
+    "mqtt": "MQTT",
     "opc-ua": "OPC",
 }
 

@@ -17,7 +17,7 @@ tags:
   - ot.mqtt
   - detection.unauthorized_access
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

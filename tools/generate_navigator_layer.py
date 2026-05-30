@@ -13,6 +13,7 @@ Usage:
 import json
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
@@ -220,7 +221,7 @@ def generate_navigator_layer(coverage: dict[str, str], output_path: Path) -> Non
         "description": (
             "OT Sentinel detection rule coverage mapped to MITRE ATT&CK for ICS. "
             f"Green = tested rules, Orange = experimental rules. "
-            f"Generated: 2026-05-27. "
+            f"Generated: {datetime.now().strftime('%Y-%m-%d')}. "
             f"Rules loaded: {len(coverage)} technique(s) covered."
         ),
         "filters": {

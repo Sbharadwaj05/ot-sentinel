@@ -44,12 +44,21 @@ tests/
 │   ├── test_runner.py         # Automated test harness
 │   └── validator.py           # Rule validation utility
 ├── modbus/
-│   ├── test_unauthorized_write.py    # MOD-001
-│   └── expected_alerts.json          # Expected alert definitions
+│   ├── test_unauthorized_write.py         # MOD-001 — unauthorized coil write
+│   ├── test_unauthorized_register_write.py # MOD-002 — unauthorized register write
+│   ├── test_rogue_master.py               # MOD-003 — rogue master detection
+│   ├── test_illegal_function.py           # MOD-004 — illegal function code
+│   ├── test_mass_read.py                  # MOD-005 — mass register read
+│   ├── test_rapid_polling.py              # MOD-006 — rapid polling DoS
+│   ├── test_exception_flood.py            # MOD-007 — exception flood
+│   ├── test_nonstandard_port.py           # MOD-008 — non-standard port
+│   └── expected_alerts.json               # Expected alert definitions
 ├── dnp3/
-│   └── (Phase 2)
-└── iec104/
-    └── (Phase 3)
+│   └── README.md              # Stub — test scripts planned for v1.1
+├── iec104/
+│   └── README.md              # Stub — test scripts planned for v1.1
+└── mqtt/
+    └── README.md              # Stub — test scripts planned for v1.1
 ```
 
 ---

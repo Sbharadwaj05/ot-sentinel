@@ -141,8 +141,14 @@ def run_live_capture(interface: str, port_filter: int = 502) -> None:
                 unit_id = payload[6]
                 function_code = payload[7]
 
-                # Extract data portion (bytes after MBAP header + FC)
+                # Extract reference_number and count from PDU body (best-effort)
+                # Most read/write FCs: bytes 8-9 = starting address, 10-11 = count/value
+                reference_number = 0
+                count = 1
                 data_bytes = payload[8:]
+                if len(data_bytes) >= 4:
+                    reference_number = int.from_bytes(data_bytes[0:2], "big")
+                    count = int.from_bytes(data_bytes[2:4], "big")
                 data_hex = data_bytes.hex() if data_bytes else ""
 
                 log_line = make_log_entry(
@@ -153,6 +159,8 @@ def run_live_capture(interface: str, port_filter: int = 502) -> None:
                     transaction_id=transaction_id,
                     unit_id=unit_id,
                     function_code=function_code,
+                    reference_number=reference_number,
+                    count=count,
                     data=data_hex if data_hex else "",
                     event_type="request" if is_request else "response",
                 )
@@ -198,7 +206,12 @@ def run_pcap_replay(pcap_path: str, port_filter: int = 502) -> None:
                 transaction_id = int.from_bytes(payload[0:2], "big")
                 unit_id = payload[6]
                 function_code = payload[7]
+                reference_number = 0
+                count = 1
                 data_bytes = payload[8:]
+                if len(data_bytes) >= 4:
+                    reference_number = int.from_bytes(data_bytes[0:2], "big")
+                    count = int.from_bytes(data_bytes[2:4], "big")
                 data_hex = data_bytes.hex() if data_bytes else ""
 
                 log_line = make_log_entry(
@@ -209,6 +222,8 @@ def run_pcap_replay(pcap_path: str, port_filter: int = 502) -> None:
                     transaction_id=transaction_id,
                     unit_id=unit_id,
                     function_code=function_code,
+                    reference_number=reference_number,
+                    count=count,
                     data=data_hex if data_hex else "",
                     event_type="request" if is_request else "response",
                 )

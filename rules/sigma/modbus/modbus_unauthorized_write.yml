@@ -18,7 +18,7 @@ tags:
   - ot.modbus
   - detection.unauthorized_command
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
   definition: |
     Logs must be in JSON format as produced by modbus_tap.py. Each event

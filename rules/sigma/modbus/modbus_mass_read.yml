@@ -17,7 +17,7 @@ tags:
   - ot.modbus
   - detection.reconnaissance
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

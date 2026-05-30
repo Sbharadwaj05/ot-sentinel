@@ -16,7 +16,7 @@ tags:
   - ot.mqtt
   - detection.network_intrusion
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:

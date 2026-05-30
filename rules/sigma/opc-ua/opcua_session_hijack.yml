@@ -17,7 +17,7 @@ tags:
   - ot.opcua
   - detection.session_hijack
 logsource:
-  product: wazuh
+  product: ot_sentinel
   category: ot_protocol
 detection:
   selection:
