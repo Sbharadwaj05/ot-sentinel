@@ -17,7 +17,7 @@
   - Decoder: modbus_decoder.xml (must be loaded first)
   - Child rule: 200006 (OT-SENTINEL-MOD-005b)
 -->
-<rule id="200005" level="0"> noalert="1"
+<rule id="200005" level="0" noalert="1">
   <decoded_as>json</decoded_as>
   <field name="function_name" type="pcre2">.*</field>
 

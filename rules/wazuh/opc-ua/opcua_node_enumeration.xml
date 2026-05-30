@@ -18,7 +18,7 @@
   - Decoder: opcua_decoder.xml
   - Child rule: 200038 (OT-SENTINEL-OPC-002b)
 -->
-<rule id="200037" level="0"> noalert="1"
+<rule id="200037" level="0" noalert="1">
   <decoded_as>json</decoded_as>
 
   

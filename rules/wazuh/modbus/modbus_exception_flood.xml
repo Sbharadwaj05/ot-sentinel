@@ -24,7 +24,7 @@
   Note: We match function_code >= 128 (0x80) which is the standard Modbus
   exception response convention. Valid responses are FC 1-127.
 -->
-<rule id="200009" level="0"> noalert="1"
+<rule id="200009" level="0" noalert="1">
   <decoded_as>json</decoded_as>
   <field name="function_name" type="pcre2">.*</field>
 

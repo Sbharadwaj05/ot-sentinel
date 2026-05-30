@@ -26,7 +26,7 @@
   Wazuh rules alone cannot provide. A future enhancement could use the
   Wazuh integration framework for stateful tracking.
 -->
-<rule id="200017" level="0"> noalert="1"
+<rule id="200017" level="0" noalert="1">
   <decoded_as>json</decoded_as>
   <field name="data_link_destination" type="pcre2">\d+</field>
 

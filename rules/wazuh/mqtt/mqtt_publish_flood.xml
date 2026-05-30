@@ -17,7 +17,7 @@
   - Decoder: mqtt_decoder.xml
   - Child rule: 200034 (OT-SENTINEL-MQTT-004b)
 -->
-<rule id="200033" level="0"> noalert="1"
+<rule id="200033" level="0" noalert="1">
   <decoded_as>json</decoded_as>
 
   

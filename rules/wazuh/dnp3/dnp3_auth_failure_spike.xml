@@ -18,7 +18,7 @@
   - Decoder: dnp3_decoder.xml
   - Child rule: 200016 (OT-SENTINEL-DNP-004b)
 -->
-<rule id="200015" level="0"> noalert="1"
+<rule id="200015" level="0" noalert="1">
   <decoded_as>json</decoded_as>
   <field name="data_link_destination" type="pcre2">\d+</field>
 
