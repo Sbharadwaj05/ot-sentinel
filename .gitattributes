@@ -1,7 +1,10 @@
 # Auto-detect text files and normalize to LF on commit
 * text=auto
 
-# Explicitly set XML and YAML files to LF on commit, CRLF on checkout on Windows
+# GitHub Linguist — Python tools are utilities, not the main deliverable
+*.py linguist-vendored
+
+# Explicitly set line endings
 *.xml text eol=crlf
 *.yml text eol=crlf
 *.yaml text eol=crlf

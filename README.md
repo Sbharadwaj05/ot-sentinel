@@ -4,10 +4,12 @@
 [![Rules](https://img.shields.io/badge/rules-29-blue)](rules/)
 [![ATT&CK](https://img.shields.io/badge/ATT&CK%20ICS-7%20techniques-orange)](mappings/)
 [![CI](https://img.shields.io/badge/CI-passing-brightgreen)]()
-[![Lab](https://img.shields.io/badge/lab-OpenPLC%2BGNS3-informational)]()
+[![Lab](https://img.shields.io/badge/lab-OpenPLC%2BWazuh%204.14-informational)]()
 
-**OT Sentinel** is an open-source detection rule library for Industrial Control Systems (ICS) and Operational Technology (OT) protocols. It provides ready-to-deploy **Wazuh** and **Sigma** rules backed by MITRE ATT&CK for ICS, tested against a real OpenPLC + GNS3 digital twin lab.
+**OT Sentinel** is an open-source detection rule library for Industrial Control Systems (ICS) and Operational Technology (OT) protocols. It provides **Wazuh** and **Sigma** rules mapped to MITRE ATT&CK for ICS — built for learning, lab testing, and kickstarting OT detection engineering.
 
+> ⚠️ **Not production-ready yet.** Treat this as an educational resource and detection engineering accelerator. Test everything in your own environment before deploying to live OT networks.
+>
 > New to OT security? Start with [Getting Started](docs/GETTING_STARTED.md).
 
 ---
@@ -21,33 +23,38 @@ OT/ICS security teams face a critical gap:
 - Existing rules are proprietary, locked behind vendor contracts
 - Small water treatment plants, power substations, and factories are left blind
 
-**OT Sentinel fills this gap** — free, open-source, lab-tested detection rules anyone can deploy with Wazuh (the most popular open-source XDR).
+**OT Sentinel fills this gap** — free, open-source, lab-validated detection rules for learning, testing, and accelerating your OT detection engineering.
 
 ---
 
-## What Makes OT Sentinel Different
+## What This Is (and Isn't)
 
-| Aspect | OT Sentinel | Other Approaches |
-|--------|-------------|------------------|
-| **Rules** | Wazuh XML + Sigma YAML — ready to deploy | Proprietary, vendor-locked |
-| **Testing** | Lab-tested against real OpenPLC + GNS3 | Often untested, theoretical |
-| **Coverage** | 5+ protocols with MITRE ATT&CK for ICS mapping | Single protocol, no mapping |
-| **Cost** | Free (Apache 2.0) | $50K+ licensing |
-| **Community** | Open-source, extendable, auditable | Closed, opaque |
+| This IS | This IS NOT |
+|---------|-------------|
+| A detection engineering accelerator | A drop-in replacement for Dragos/Nozomi/Claroty |
+| Lab-validated against real OpenPLC hardware | Production-tested across diverse OT environments |
+| A learning resource for OT protocol security | A complete OT security solution |
+| A foundation you can build on and customize | A set of rules you should blindly deploy to prod |
+
+> **The honest pitch**: Clone this repo, spin up OpenPLC in a VM, deploy the rules to Wazuh, and in an afternoon you'll understand how OT protocol attacks look at the SIEM layer. That's the value — not the rules themselves, but what you learn deploying them.
 
 ---
 
-## Protocol Coverage
+## Production Readiness
 
-| Protocol | Port | Rules | Tests | Status |
-|----------|------|-------|-------|--------|
-| **Modbus TCP** | 502 | 8 Wazuh + 8 Sigma | ✅ Tested (OpenPLC + Wazuh 4.14) | Complete |
-| **DNP3** | 20000 | 7 Wazuh + 7 Sigma | 💤 Stubs | Complete |
-| **IEC 60870-5-104** | 2404 | 6 Wazuh + 6 Sigma | 💤 Stubs | Complete |
-| **MQTT** | 1883 | 5 Wazuh + 5 Sigma | 💤 Stubs | Complete |
-| **OPC-UA** | 4840 | 3 Wazuh + 3 Sigma | 💤 Stubs | Complete |
+| Protocol | Rules Written | Lab-Tested (OpenPLC) | Wazuh-Validated | Test Scripts |
+|----------|-------------|----------------------|-----------------|-------------|
+| **Modbus** | 8 | ✅ 8/8 | ✅ 4.14.5 | ✅ All 8 |
+| **DNP3** | 7 | — | ✅ 1/7 (logtest) | 💤 Stub READMEs |
+| **IEC 104** | 6 | — | ✅ 1/6 (logtest) | 💤 Stub READMEs |
+| **MQTT** | 5 | — | ✅ 1/5 (logtest) | 💤 Stub READMEs |
+| **OPC-UA** | 3 | — | ✅ 1/3 (logtest) | 💤 Stub READMEs |
 
-> 💤 **Stubs** = test directories exist, scripts pending. Contribute one via PR.
+> 💤 **Stubs** = test directories exist with wazuh-logtest one-liners. Full pymodbus-style scripts planned for v1.1.
+>
+> **Before deploying to production**: test every rule against YOUR hardware, tune thresholds to YOUR traffic patterns, and populate all CDB allowlists with YOUR authorized devices.
+
+> **Missing protocols**: PROFINET, EtherNet/IP, BACnet, and HART-IP are not yet covered. See the [Roadmap](ROADMAP.md) for planned additions. Community contributions welcome.
 
 ---
 
