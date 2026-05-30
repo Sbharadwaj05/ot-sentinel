@@ -14,6 +14,8 @@
 >
 > New to OT security? Start with [Getting Started](docs/GETTING_STARTED.md).
 
+![OT Sentinel Architecture](docs/lab-setup/network-diagram.png)
+
 ---
 
 ## The Problem
@@ -82,6 +84,12 @@ OT/ICS security teams face a critical gap:
 | [QuickDraw](https://github.com/digitalbond/QuickDraw) | SNORT rules | SIEM-layer (Wazuh/Sigma) |
 
 ---
+
+## Screenshots
+
+| OpenPLC Dashboard | Wazuh Alert (logtest) | Attack Test |
+|-------------------|----------------------|-------------|
+| ![OpenPLC](docs/lab-setup/openplc-dashboard.png) | ![Alert](docs/lab-setup/wazuh-alert-logtest.png) | ![Test](docs/lab-setup/modbus-test-running.png) |
 
 ---
 
